@@ -4,12 +4,16 @@
 \alias{plot_cuperdec}
 \title{Plot cumulative percent decay curves}
 \usage{
-plot_cuperdec(table, metadata)
+plot_cuperdec(table, metadata, burnin_result, restrict_x = 0)
 }
 \arguments{
 \item{table}{output tibble from `calculate_curves()`}
 
 \item{metadata}{optional output from `load_map()`}
+
+\item{burnin_result}{optional output from `apply_*_burnin()` functions}
+
+\item{restrict_x}{optional restriction viewing of abundance rank to X number of ranks (useful for closer inspection of curves)}
 }
 \description{
 Plot cumulative percent decay curves

@@ -39,7 +39,11 @@ load_taxa_table <- function(x){
 #' @export
 load_database <- function(x, target){
 
-  table <- readr::read_tsv(x)
+  if (is.data.frame(x)) {
+    table <- x
+  } else {
+    table <- readr::read_tsv(x)
+  }
 
   if (ncol(table) != 2)
     stop("[cuperdec] error: your isolation source database requires two columns only: Sample, Isolation Source.")
@@ -66,7 +70,12 @@ load_database <- function(x, target){
 #'
 #' @export
 load_map <- function(x, sample_col, source_col){
-  table <- readr::read_tsv(x)
+
+  if (is.data.frame(x)) {
+    table <- x
+  } else {
+    table <- readr::read_tsv(x)
+  }
 
   if (ncol(table) < 2)
     stop("[cuperdec] error: your isolation source database a minimum of two columns: Sample, Sample Source.")

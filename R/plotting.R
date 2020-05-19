@@ -2,14 +2,18 @@
 #'
 #' @param table output tibble from `calculate_curves()`
 #' @param metadata optional output from `load_map()`
+#' @param burnin_result optional output from `apply_*_burnin()` functions
+#' @param restrict_x optional restriction viewing of abundance rank to X number of ranks (useful for closer inspection of curves)
 #'
 #' @export
 
-## TODO Add consideration when threshold info is somehow supplied
+plot_cuperdec <- function(table, metadata, burnin_result, restrict_x = 0){
 
-plot_cuperdec <- function(table, metadata){
+  if (restrict_x != 0) {
+    table <- table %>% dplyr::filter(Rank <= restrict_x)
+  }
 
-  if (missing(metadata)) {
+  if (missing(metadata) && missing(burnin_result) ) {
 
     ggplot2::ggplot(table, ggplot2::aes(.data$Rank,
                                         .data$Fraction_Target,
@@ -19,7 +23,7 @@ plot_cuperdec <- function(table, metadata){
       ggplot2::ylab("Percentage Target Source") +
       ggplot2::theme_minimal()
 
-    } else {
+    } else if (missing(burnin_result)) {
 
     table_meta <- dplyr::left_join(table, metadata, by = c("Sample"))
 
@@ -38,6 +42,24 @@ plot_cuperdec <- function(table, metadata){
       ggplot2::facet_wrap(~ Sample_Source) +
       ggplot2::theme_minimal()
 
+
+    } else {
+
+      table_meta <- dplyr::left_join(table,
+                                     metadata,
+                                     by = c("Sample")) %>%
+       dplyr::left_join(burnin_result, by = c("Sample"))
+
+      ggplot2::ggplot(table_meta, ggplot2::aes(.data$Rank,
+                                               .data$Fraction_Target,
+                                               group = .data$Sample,
+                                               colour = .data$Passed)
+      ) +
+        ggplot2::geom_line() +
+        ggplot2::xlab("Abundance Rank") +
+        ggplot2::ylab("Percentage Target Source") +
+        ggplot2::facet_wrap(~ Sample_Source) +
+        ggplot2::theme_minimal()
 
   }
 
