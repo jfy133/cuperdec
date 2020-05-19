@@ -4,10 +4,12 @@
 \alias{load_database}
 \title{Load database}
 \usage{
-load_database(x)
+load_database(x, target)
 }
 \arguments{
 \item{x}{a two column TSV file}
+
+\item{target}{the string in the 'Isolation Source' (i.e. 2nd) column which is the expected target source of the samples}
 }
 \description{
 This loads a taxon / isolation source database file i.e. first column is

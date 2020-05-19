@@ -3,16 +3,27 @@
 #' This loads a typical taxa table (Samples: columns; Taxa: rows) in TSV format
 #' and standardises some columns, storing the table in the form of a tibble.
 #'
-#' @param x a TSV file
+#' @param x a TSV file or tidy data frame
 #'
 #' @export
-load_taxatable <- function(x){
-  table <- readr::read_tsv(x)
+load_taxa_table <- function(x){
 
-  if (ncol < 2)
+  if (is.data.frame(x)) {
+    table <- x
+  } else {
+    table <- readr::read_tsv(x)
+  }
+
+  if (ncol(table) < 2)
     stop("[cuperdec] error: your taxa table requires a minimum of 2 columns only: Taxon, Sample_1")
 
-    dplyr::rename(Taxon = 1)
+  table %>%
+    dplyr::rename(Taxon = 1) %>%
+    tidyr::pivot_longer(data = .,
+                        names_to = "Sample",
+                        values_to = "Count",
+                        cols = -dplyr::matches("Taxon"))  %>%
+    dplyr::filter(.data$Count != 0)
 }
 
 #' Load database
@@ -23,16 +34,22 @@ load_taxatable <- function(x){
 #' Taxon names should match that with the taxa table.
 #'
 #' @param x a two column TSV file
+#' @param target the string in the 'Isolation Source' (i.e. 2nd) column which is the expected target source of the samples
 #'
 #' @export
-load_database <- function(x){
+load_database <- function(x, target){
 
-  table <- readr::read_tsv(x) %>%
+  table <- readr::read_tsv(x)
 
-  if (ncol != 2)
+  if (ncol(table) != 2)
     stop("[cuperdec] error: your isolation source database requires two columns only: Sample, Isolation Source.")
 
-  table %>% dplyr::rename(Taxon = 1, Isolation_Source = 2)
+  table %>%
+    dplyr::rename(Taxon = 1, Isolation_Source = 2) %>%
+    dplyr::mutate(Isolation_Source = dplyr::case_when(.data$Isolation_Source != target ~ FALSE,
+                                                      .data$Isolation_Source == target ~ TRUE,
+                                                      TRUE ~ FALSE)
+                  )
 }
 
 #' Load metadata table
@@ -54,6 +71,8 @@ load_map <- function(x, sample_col, source_col){
   if (ncol(table) < 2)
     stop("[cuperdec] error: your isolation source database a minimum of two columns: Sample, Sample Source.")
 
-  table %>% dplyr::rename(Sample = sample, Sample_Source = source)
+  table %>%
+    dplyr::rename(Sample = sample_col, Sample_Source = source_col) %>%
+    dplyr::select(.data$Sample, .data$Sample_Source)
 
 }
