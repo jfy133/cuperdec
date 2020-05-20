@@ -11,7 +11,7 @@ load_taxa_table <- function(x){
   if (is.data.frame(x)) {
     table <- x
   } else {
-    table <- readr::read_tsv(x)
+    table <- readr::read_tsv(x, col_types = readr::cols())
   }
 
   if (ncol(table) < 2)
@@ -42,7 +42,7 @@ load_database <- function(x, target){
   if (is.data.frame(x)) {
     table <- x
   } else {
-    table <- readr::read_tsv(x)
+    table <- readr::read_tsv(x, col_types = readr::cols())
   }
 
   if (ncol(table) != 2)
@@ -74,7 +74,7 @@ load_map <- function(x, sample_col, source_col){
   if (is.data.frame(x)) {
     table <- x
   } else {
-    table <- readr::read_tsv(x)
+    table <- readr::read_tsv(x, col_types = readr::cols())
   }
 
   if (ncol(table) < 2)
