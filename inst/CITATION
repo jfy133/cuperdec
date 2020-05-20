@@ -1,16 +1,12 @@
 citHeader("To cite cuperdec in publications use:")
 
 citEntry(
-  entry    = "Article",
-  title    = ,
-  author   = ,
-  journal  = ,
-  year     = ,
-  volume   = ,
-  number   = ,
-  pages    = ,
-  url      = ,
+  entry    = "Manual",
+  title    = "cuperdec: cumulative percent decay curves",
+  author   = "James A. Fellows Yates",
+  year     = "2020",
+  url      = "https://github.com/jfy133/cuperdec",
   textVersion = paste(
-
+  "James A. Fellows Yates (2020) cuperdec: cumulative percent decay curves. R package version 0.1.0. https://github.com/jfy133/cuperdec"
   )
 )
