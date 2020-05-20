@@ -21,3 +21,5 @@ NeedsCompilation: no
 Packaged: 2020-05-18 13:34:27 UTC; fellows@shh.mpg.de
 Author: James Fellows Yates [aut, cre]
 Maintainer: James Fellows Yates <jfy133@gmail.com>
+URL: https://github.com/jfy133/cuperdec
+BugReports: https://github.com/jfy133/cuperdec/issues
