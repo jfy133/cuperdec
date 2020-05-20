@@ -23,3 +23,7 @@ Author: James Fellows Yates [aut, cre]
 Maintainer: James Fellows Yates <jfy133@gmail.com>
 URL: https://github.com/jfy133/cuperdec
 BugReports: https://github.com/jfy133/cuperdec/issues
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
