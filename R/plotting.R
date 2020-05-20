@@ -10,7 +10,7 @@
 plot_cuperdec <- function(table, metadata, burnin_result, restrict_x = 0){
 
   if (restrict_x != 0) {
-    table <- table %>% dplyr::filter(Rank <= restrict_x)
+    table <- table %>% dplyr::filter(.data$Rank <= restrict_x)
   }
 
   if (missing(metadata) && missing(burnin_result) ) {

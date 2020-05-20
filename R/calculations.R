@@ -76,40 +76,48 @@ hard_burnin_filter <- function(table, threshold, burnin) {
 #' @param table a tibble from `calculate_curve()`
 #' @param threshold a percentage of the target-source in a sample above which a sample is considered 'retained'
 #'
+#' @importFrom stats sd
 #' @export
 
 adaptive_burnin_filter <- function(table, threshold){
 
-  ## Calculate per-sampler the mean +- SD of
+
+  ## Find differences in percentage between each stepwise of rank
+  table_fluc <- table %>%
+    dplyr::mutate(Fluctuation = dplyr::lag(.data$Fraction_Target,
+                                           1,
+                                           default = 0) - .data$Fraction_Target)
+
+  ## Calculate per-sample the mean +- SD of
   ## stepwise-rank-percentage-target-differences, with + as upper limit and -
   ## as lower limit
-  fluctuations <- table %>%
-    dplyr::mutate(Fluctuation = dplyr::lag(Fraction_Target,
-                                           1,
-                                           default = 0) - Fraction_Target) %>%
-    dplyr::select(Sample, Fluctuation) %>%
-    dplyr::group_by(Sample) %>%
-    dplyr::summarise(mean(Fluctuation),
-              sd(Fluctuation),
-              min(Fluctuation),
-              max(Fluctuation)) %>%
-    dplyr::mutate(Upper_Limit = `mean(Fluctuation)` + `sd(Fluctuation)`,
-           Lower_Limit = `mean(Fluctuation)` - `sd(Fluctuation)`) %>%
-    dplyr::select(Sample, Upper_Limit, Lower_Limit)
+  limits <- table_fluc %>%
+    dplyr::select(.data$Sample, .data$Fluctuation) %>%
+    dplyr::group_by(.data$Sample) %>%
+    dplyr::summarise(mean(.data$Fluctuation),
+              sd(.data$Fluctuation),
+              min(.data$Fluctuation),
+              max(.data$Fluctuation)) %>%
+    dplyr::mutate(Upper_Limit = .data$`mean(.data$Fluctuation)` + .data$`sd(.data$Fluctuation)`,
+           Lower_Limit = .data$`mean(.data$Fluctuation)` - .data$`sd(.data$Fluctuation)`) %>%
+    dplyr::select(.data$Sample, .data$Upper_Limit, .data$Lower_Limit)
 
 
-
-   limits <- left_join(table, fluctuations) %>%
-     dplyr::mutate(Exceed_Limits = if_else(Fluctuation < Upper_Limit &
-                                            Fluctuation > Lower_Limit,
+  ## Find the position from which the difference stops exceeding the rank limits
+   burnin_rank <- dplyr::left_join(table_fluc, limits, by = c("Sample")) %>%
+     dplyr::mutate(Exceed_Limits = dplyr::if_else(.data$Fluctuation < .data$Upper_Limit &
+                                             .data$Fluctuation > .data$Lower_Limit,
                                           F,
                                           T)) %>%
-     dplyr::filter(Exceed_Limits) %>%
+     dplyr::filter(.data$Exceed_Limits) %>%
      dplyr::slice(dplyr::n()) %>%
-     dplyr::select(Sample, Abundance_Rank) %>%
-     dplyr::rename(Within_Limits = Abundance_Rank) %>%
-     dplyr::filter(Within_Limits)
+     dplyr::select(.data$Sample, .data$Rank) %>%
+     dplyr::rename(Within_Limits = .data$Rank)
 
-  ## TODO Finish calculations
-
+   ## Find whether sample exceeds the user specified percentage target source,
+   ## after defined burn-in rank
+   table %>%
+     dplyr::left_join(burnin_rank, by = c("Sample")) %>%
+     dplyr::mutate(Pass = .data$Rank > .data$Within_Limits + 1 & .data$Fraction_Target > threshold) %>%
+     dplyr::summarise(Passed = any(.data$Pass))
 }
