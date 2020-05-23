@@ -1,3 +1,4 @@
 ^cuperdec\.Rproj$
 ^\.Rproj\.user$
 ^\.github$
+^codecov\.yml$
