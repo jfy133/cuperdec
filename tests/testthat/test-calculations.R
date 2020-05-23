@@ -5,27 +5,42 @@ raw_database <- system.file("extdata", "example_database.tsv", package = "cuperd
 raw_metadata <- system.file("extdata", "example_metadata.tsv", package = "cuperdec")
 
 table <- cuperdec::load_taxa_table(raw_table)
-
-testthat::test_that("Taxa table is correctly formatted for downstream",{
-  testthat::expect_named(table, c("Taxon", "Sample", "Count"))
-  testthat::expect_type(table$Taxon, "character")
-  testthat::expect_type(table$Sample, "character")
-  testthat::expect_type(table$Count, "double")
-})
-
 database <- cuperdec::load_database(raw_database, "oral")
-
-testthat::test_that("Isolation source database table is correctly formatted for downstream",{
-  testthat::expect_named(database, c("Taxon", "Isolation_Source"))
-  testthat::expect_type(database$Taxon, "character")
-  testthat::expect_named(database$Isolation_Source, "logical")
-  testthat::expect_length(unique(database$Isolation_Source), 2)
-})
-
 metadata <- load_map(raw_metadata, "#SampleID", "Env")
 
-testthat::test_that("Metadata map table is correctly formatted for downstream",{
-  testthat::expect_named(metadata, c("Sample", "Sample_Source"))
-  testthat::expect_type(metadata$Sample, "character")
-  testthat::expect_named(metadata$Sample_Source, "logical")
+curve <- calculate_curve(table, database)
+
+testthat::test_that("Curves calculated as expected",{
+  testthat::expect_named(curve, c("Taxon", "Sample", "Rank", "Fraction_Target"))
+  testthat::expect_type(curve$Taxon, "character")
+  testthat::expect_type(curve$Sample, "character")
+  testthat::expect_type(curve$Rank, "integer")
+  testthat::expect_type(curve$Fraction_Target, "double")
+  testthat::expect_gt(length(unique(curve$Rank)), 1)
+
+})
+
+filter_result <- simple_filter(curve, 50)
+
+testthat::test_that("Simple filter works as expected",{
+  testthat::expect_named(filter_result, c("Sample", "Passed"))
+  testthat::expect_type(filter_result$Sample, "character")
+  testthat::expect_type(filter_result$Passed, "logical")
+})
+
+burnin_result <- hard_burnin_filter(curve, 50, 0.1)
+
+testthat::test_that("Hard burnin filter works as expected",{
+  testthat::expect_named(burnin_result, c("Sample", "Passed"))
+  testthat::expect_type(burnin_result$Sample, "character")
+  testthat::expect_type(burnin_result$Passed, "logical")
+})
+
+burnin_result <- adaptive_burnin_filter(curve, 50)
+
+
+testthat::test_that("Adaptive burn-in works as expected",{
+  testthat::expect_named(burnin_result, c("Sample", "Passed"))
+  testthat::expect_type(burnin_result$Sample, "character")
+  testthat::expect_type(burnin_result$Passed, "logical")
 })
