@@ -11,7 +11,7 @@ metadata <- load_map(raw_metadata, "#SampleID", "Env")
 curve <- calculate_curve(table, database)
 
 testthat::test_that("Curves calculated as expected",{
-  testthat::expect_named(curve, c("Taxon", "Sample", "Rank", "Fraction_Target"))
+  testthat::expect_named(curve, c("Sample", "Taxon", "Rank", "Fraction_Target"))
   testthat::expect_type(curve$Taxon, "character")
   testthat::expect_type(curve$Sample, "character")
   testthat::expect_type(curve$Rank, "integer")
