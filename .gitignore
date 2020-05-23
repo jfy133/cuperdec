@@ -2,7 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-test/
-tests/
 playground
 inst/doc
