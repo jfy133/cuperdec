@@ -66,19 +66,25 @@ in your system.
 
 ```{r}
 
-example_taxatable <- system.file("extdata", "example_taxatable.tsv", package = "cuperdec")
-example_database <- system.file("extdata", "example_database.tsv", package = "cuperdec")
-example_map <- system.file("extdata", "example_metadata.tsv", package = "cuperdec")
+example_taxatable <- system.file("extdata",
+                                 "example_taxatable.tsv",
+                                 package = "cuperdec")
+example_database <- system.file("extdata",
+                                "example_database.tsv",
+                                package = "cuperdec")
+example_map <- system.file("extdata",
+                           "example_metadata.tsv",
+                           package = "cuperdec")
 
 ```
 
 Now we can use the loading functions to load the tables for you.
 
-`load_taxa_table()` will convert a OTU table into long format and rename 
+`load_taxa_table()` will convert a OTU table into long format and rename
 columns to names that downstream functions will use.
 
 ```{r}
-taxatable <- load_taxa_table(example_taxatable) %>% 
+taxatable <- load_taxa_table(example_taxatable) %>%
   print()
 ```
 
@@ -88,8 +94,8 @@ curve of. In this case, we want to identify the level of taxa in our samples,
 that are labeled 'oral' in the database.
 
 ```{r}
-database <- load_database(example_database, target = "oral") %>% 
-  print() 
+database <- load_database(example_database, target = "oral") %>%
+  print()
 ```
 
 Finally, we want to compare different groups of our samples, with each 
@@ -98,9 +104,9 @@ the metadata TSV, the name of the column with sample names, and the name of the
 column with the groups.
 
 ```{r}
-metadata_map <- load_map(example_map, 
-                     sample_col = "#SampleID", 
-                     source_col = "Env") %>% 
+metadata_map <- load_map(example_map,
+                     sample_col = "#SampleID",
+                     source_col = "Env") %>%
   print()
 ```
 
@@ -118,7 +124,7 @@ To do these of the taxa table loaded above, we use the `calculate_curve()`
 function.
 
 ```{r}
-curves <- calculate_curve(taxatable, database = database) %>% 
+curves <- calculate_curve(taxatable, database = database) %>%
   print()
 ```
 
@@ -181,7 +187,7 @@ group_order <- c("subPlaque",
                "ModernDayHuman_2"
 )
 
-metadata_map <- metadata_map %>% 
+metadata_map <- metadata_map %>%
   mutate(Sample_Source = factor(Sample_Source, levels = group_order))
 
 # Re-plot
@@ -278,7 +284,7 @@ we can use the list of samples that did not our thresholds to remove from
 downstream analysis.
 
 ```{r}
-discard_list <- burnin_result %>% filter(!Passed) 
+discard_list <- burnin_result %>% filter(!Passed)
 discard_list
 ```
 

@@ -6,7 +6,7 @@
 #' @param x a TSV file or tidy data frame
 #'
 #' @export
-load_taxa_table <- function(x){
+load_taxa_table <- function(x) {
 
   if (is.data.frame(x)) {
     table <- x
@@ -37,7 +37,7 @@ load_taxa_table <- function(x){
 #' @param target the string in the 'Isolation Source' (i.e. 2nd) column which is the expected target source of the samples
 #'
 #' @export
-load_database <- function(x, target){
+load_database <- function(x, target) {
 
   if (is.data.frame(x)) {
     table <- x
@@ -56,7 +56,7 @@ load_database <- function(x, target){
                   )
 
   if (!any(result$Isolation_Source))
-    stop("[cuperdec] error: your supplied target source was not found in your isolation source column!" )
+    stop("[cuperdec] error: your supplied target source was not found in your isolation source column!")
 
   return(result)
 
@@ -75,7 +75,7 @@ load_database <- function(x, target){
 #' @param source_col a column name specifying which group or the source the sample is from
 #'
 #' @export
-load_map <- function(x, sample_col, source_col){
+load_map <- function(x, sample_col, source_col) {
 
   if (is.data.frame(x)) {
     table <- x

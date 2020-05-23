@@ -9,7 +9,7 @@
 #' @importFrom dplyr row_number
 #'
 #' @export
-calculate_curve <- function(table, database){
+calculate_curve <- function(table, database) {
 
   dplyr::left_join(table, database, by = c("Taxon")) %>%
     dplyr::arrange(.data$Sample, dplyr::desc(.data$Count)) %>%
@@ -33,7 +33,7 @@ calculate_curve <- function(table, database){
 #' @importFrom dplyr row_number
 #'
 #' @export
-simple_filter <- function(table, threshold){
+simple_filter <- function(table, threshold) {
   table %>%
     dplyr::mutate(Pass = .data$Fraction_Target > threshold) %>%
     dplyr::summarise(Passed = any(.data$Pass))
@@ -79,7 +79,7 @@ hard_burnin_filter <- function(table, threshold, burnin) {
 #' @importFrom stats sd
 #' @export
 
-adaptive_burnin_filter <- function(table, threshold){
+adaptive_burnin_filter <- function(table, threshold) {
 
 
   ## Find differences in percentage between each stepwise of rank

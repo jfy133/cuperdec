@@ -3,18 +3,19 @@
 #' @param table output tibble from `calculate_curves()`
 #' @param metadata optional output from `load_map()`
 #' @param burnin_result optional output from `apply_*_burnin()` functions
-#' @param restrict_x optional restriction viewing of abundance rank to X number of ranks (useful for closer inspection of curves)
+#' @param restrict_x optional restriction viewing of abundance rank to X number
+#' of ranks (useful for closer inspection of curves)
 #'
 #' @export
 
 
-plot_cuperdec <- function(table, metadata, burnin_result, restrict_x = 0){
+plot_cuperdec <- function(table, metadata, burnin_result, restrict_x = 0) {
 
   if (restrict_x != 0) {
     table <- table %>% dplyr::filter(.data$Rank <= restrict_x)
   }
 
-  if (missing(metadata) && missing(burnin_result) ) {
+  if (missing(metadata) && missing(burnin_result)) {
 
      plot_simple(table)
 
@@ -109,7 +110,7 @@ plot_grouped <- function(table, metadata) {
 
   table_meta <- dplyr::left_join(table, metadata, by = c("Sample"))
 
-  if ( any(is.na(table_meta$Sample_Source)) )
+  if (any(is.na(table_meta$Sample_Source)))
     stop("[cuperdec] error: one or more of your samples did not have an associated sample source in the metadata table, or sample names did not match.")
 
   ## TODO - check if all samples in original dataframe is in map, given left join!
@@ -149,7 +150,7 @@ plot_grouped_burnin <- function(table, metadata, burnin_result) {
                                  by = c("Sample")) %>%
     dplyr::left_join(burnin_result, by = c("Sample"))
 
-  if ( any(is.na(table_meta$Sample_Source)) )
+  if (any(is.na(table_meta$Sample_Source)))
     stop("[cuperdec] error: one or more of your samples did not have an associated sample source in the metadata table, or sample names did not match.")
 
   ggplot2::ggplot(table_meta, ggplot2::aes(.data$Rank,
