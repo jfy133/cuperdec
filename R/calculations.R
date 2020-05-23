@@ -61,7 +61,7 @@ hard_burnin_filter <- function(table, threshold, burnin) {
   ## keep now until think of more elegent solution
   table %>%
     dplyr::left_join(n_taxa, by = "Sample") %>%
-    dplyr::mutate(Pass = .data$Start > .data$Rank && .data$Fraction_Target > threshold) %>%
+    dplyr::mutate(Pass = .data$Start > .data$Rank & .data$Fraction_Target > threshold) %>%
     dplyr::summarise(Passed = any(.data$Pass))
 
 }

@@ -5,4 +5,9 @@
 [![Codecov test coverage](https://codecov.io/gh/jfy133/cuperdec/branch/master/graph/badge.svg)](https://codecov.io/gh/jfy133/cuperdec?branch=master)
 <!-- badges: end -->
 
-R library to generate 'Cumulative Percent Decay' curves for microbial taxonomic profiles
+R library to generate 'Cumulative Percent Decay' curves for microbial taxonomic 
+profiles.
+
+These curves aim to represent the level of 'endogenous' content of microbiome 
+samples, such as ancient dental calculus, to help to identify samples with low
+levels of preservation that should be discarded for downstream analysis.

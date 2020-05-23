@@ -126,7 +126,6 @@ plot_grouped <- function(table, metadata) {
 
 }
 
-
 #' <Internal> Plot simple curves with sample group separation and burnin colouring
 #'
 #' Informs `plot_cuperdec()`
@@ -136,6 +135,8 @@ plot_grouped <- function(table, metadata) {
 #' @param burnin_result optional output from `apply_*_burnin()` functions
 
 plot_grouped_burnin <- function(table, metadata, burnin_result) {
+
+  ## TODO Add missing metadata check!
 
   if (any(!c("Sample", "Rank", "Fraction_Target") %in% colnames(table)))
     stop("[cuperdec] error: missing column in input table. Minimum required: Sample, Rank, Fraction_Target. Is input from calculate_curve()?")

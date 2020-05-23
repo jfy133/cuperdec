@@ -1,19 +1,292 @@
 ---
 title: "Introduction to cuperdec"
 output: rmarkdown::html_vignette
+author: "James A. Fellows Yates"
+date: "`r Sys.Date()`"
 vignette: >
   %\VignetteIndexEntry{Introduction to cuperdec}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
+# Introduction
+
+This vignette gives an example on how to use the `cuperdec` R package. The aim 
+of this package is to assist in the generation of what I have called 
+'cumulative percent decay curves`. The main purpose of these are to act as a
+rough graphical representation of the level of taxonomic preservation of 
+ancient microbiomes. 
+
+The curves display a combination of both the number of taxa that are known to 
+have derived from a given 'target' (or expected) isolation source, e.g. such as
+the oral cavity, weighted by relative abundance in the sample. In otherwords,
+it can act as a way of describing the assumed original 'endogenous' content of
+an ancient sample (vs. taphonomic or contaminant sources)
+
+# Input
+
+The generation of these curves require at a minimum:
+  * A TSV formatted OTU Table with the following characteristics:
+    * Column names: e.g. Taxon, Sample_A, Sample_B, Sample_C 
+    * First Column: a list of taxa
+    * Cells: some numeric value representing number of observations of a taxon in a sample 
+  * A TSV formatted isolation source table with two columns:
+    * A list of taxa that matches the names in your OTU table (e.g. _Tannerlla forsythia_, _Helicobacter pylori_, _Mycobacterium kansasii_)
+    * The corresponding isolation sources of each taxon (e.g. oral, gut, soil etc.)
+    
+Additionally, you can supply:
+  * A TSV formatted metadata table, which contains:
+    * A column with sample names (matching OTU table)
+    * A grouping column (i.e. allows grouping of samples to be displayed together)
+    
+In this example, we will use a dataset from Fellows Yates _et al._ 202X. This
+study looked at microbiome DNA isolated from dental calculus of ancient 
+skeletons. We wanted to try to identify samples which appeared to have little-
+to no-preservation of the original oral taxa that makes up a tooth biofilm, that
+may negatively influence downstream analyses. We do this by comparing the curves
+of the ancient samples with modern samples of known isolation sources.
+
+# Data Loading
+
+First we will load the `cuperdec` package, and helper libraries to help make
+reading R code easier.
 
 ```{r setup}
 library(cuperdec)
+library(magrittr) ## for pipes!
+library(dplyr) # for mutate()!
 ```
+
+Next we can load the dataset using helper functions that load and format the 
+tables that can be used by downstream `cuperdec` functions. The example data
+is stored data with the package, so we will first find the locations of these
+in your system.
+
+> :warning: You would not normally have to run this step in your own analysis!
+
+```{r}
+
+example_taxatable <- system.file("extdata", "example_taxatable.tsv", package = "cuperdec")
+example_database <- system.file("extdata", "example_database.tsv", package = "cuperdec")
+example_map <- system.file("extdata", "example_metadata.tsv", package = "cuperdec")
+
+```
+
+Now we can use the loading functions to load the tables for you.
+
+`load_taxa_table()` will convert a OTU table into long format and rename 
+columns to names that downstream functions will use.
+
+```{r}
+taxatable <- load_taxa_table(example_taxatable) %>% 
+  print()
+```
+
+`load_database()` takes two paramters, the isolation source table, and also
+the name of the 'target' source you want to estimate the 'endogenous' content
+curve of. In this case, we want to identify the level of taxa in our samples,
+that are labeled 'oral' in the database.
+
+```{r}
+database <- load_database(example_database, target = "oral") %>% 
+  print() 
+```
+
+Finally, we want to compare different groups of our samples, with each 
+different modern comparative source. For this, we use `load_map()`, supplying
+the metadata TSV, the name of the column with sample names, and the name of the
+column with the groups.
+
+```{r}
+metadata_map <- load_map(example_map, 
+                     sample_col = "#SampleID", 
+                     source_col = "Env") %>% 
+  print()
+```
+
+# Calculating a simple curve
+
+Now, we can calculate the cumulative percent curves per sample. The way this
+works is to order (per sample) each taxon by it's abundance. Then, calculate
+the fraction of taxa at each rank, that have come from your 'target' source (
+including all ranks up until the current one). 
+
+A schematic can be seen on Figure R8 in [github repository](https://github.com/jfy133/Anthropoid_Calculus_Microbiome_Evolution/tree/master/#r81-cumulative-percent-decay-plots) of 
+Fellows Yates _et al._ (202X).
+
+To do these of the taxa table loaded above, we use the `calculate_curve()` 
+function.
+
+```{r}
+curves <- calculate_curve(taxatable, database = database) %>% 
+  print()
+```
+
+Here you can see a Rank column, which represents the abundance rank of each
+taxon (from smallest to largest rank representing most to least abundant),
+and a fraction of all taxa up to that rank that are derived from your target
+isolation source.
+
+`cuperdec` also offers a helper function for fast plotting.
+
+```{r}
+plot_cuperdec(curves)
+```
+
+> Note that these functions just run basic `ggplot()` functions with a couple 
+of preferred theming based on the preferences of the package's author. You can 
+adapt the functions for your own function by running the internal `plot_simple`
+function without brackets to see the ggplot2 function, and copying the 
+ggplot2 function from there.
+
+Due to the large number of samples in the example data, we cannot see much. 
+To improve this, we can use a second plotting function to separate each group
+of samples into their own window.
+
+```{r}
+plot_cuperdec(curves, metadata_map)
+```
+
+This is much easier to visualise, and we can start to see some differences.
+
+Note that if you wanted to re-order the order panels, you can simply convert
+the 'Sample_Source' column of the `metadata_map` to factors, with your 
+preferred ordering. For example:
+
+```{r}
+## Set ordering of groups
+group_order <- c("subPlaque",
+               "supPlaque",
+               "urbanGut",
+               "ruralGut",
+               "skin",
+               "sediment",
+               "EnvironmentalControl",
+               "ExtractionControl",
+               "LibraryControl",
+               "Howler_Monkey",
+               "Gorilla_1",
+               "Gorilla_2",
+               "Gorilla_3",
+               "Chimp_1",
+               "Chimp_2",
+               "Chimp_3",
+               "Chimp_4",
+               "Neanderthal",
+               "PreagriculturalHuman_1",
+               "PreagriculturalHuman_2",
+               "PreantibioticHuman_1",
+               "PreantibioticHuman_2",
+               "ModernDayHuman_1",
+               "ModernDayHuman_2"
+)
+
+metadata_map <- metadata_map %>% 
+  mutate(Sample_Source = factor(Sample_Source, levels = group_order))
+
+# Re-plot
+plot_cuperdec(curves, metadata = metadata_map)
+```
+
+Now we can see that the calculus samples (Howler monkey onwards), look much more
+like the Plaque samples, compared to e.g. sediment and skin.
+
+# Preservation filtering
+
+## Simple
+
+While visualisation of these difference curves already start help us
+to distinguish well-preserved samples from those that maybe have little oral
+taxa preserved, we can also try and use the observations from the plot above
+to set up cut-off filters.
+
+For example, other than a single extraction control, all non-plaque comparative
+samples do not exceed the 'Percentage Target Source' threshold of ~50%.
+
+Using observations like this `cuperdec` offers a range of different functions 
+that perform various cut-off assessments between samples. For example, we can
+use `simple_filter()` to indicate any sample that does not exceed 50% at any
+point along the abundance rank.
+
+```{r}
+filter_result <- simple_filter(curves, threshold = 50) %>% print()
+```
+
+We can then supply this information as an additional paramter for plotting.
+
+```{r}
+plot_cuperdec(curves, metadata_map, filter_result)
+```
+
+## Hard Burnin
+
+The list of samples generated by `simple_filter()` above could now be used to
+discard those samples that did not pass the cut off from downstream analysis.
+
+However, the one ExtractionControl sample that exceeds 50% for only a couple
+of ranks, actually looks like for the most part that it doesn't look like it
+has much 'oral' taxa at all. It may just be spurious hits, or an over-weighting
+due to the small denominator of the abundance rank in the early ranks.
+
+Therefore, we could maybe apply a simple 'burn in' i.e. only consider whether
+a given curve goes aobve 50% after X amount of ranks (given here as a fraction
+of 1.0). For example, lets ignore the first 10% ranks of each sample before
+checking if the curve goes above 50% of the target source.
+
+```{r}
+burnin_result <- hard_burnin_filter(curves, threshold = 50, burnin = 0.1)
+plot_cuperdec(curves, metadata_map, burnin_result)
+```
+
+This is better, but now we have a Neanderthal and a few preagricultural
+humans that clearly exceed 50% for quite a few ranks, so might have lower but 
+sufficient preservation that we still want to keep this. 
+
+We can also supply an extra parameter to `plot_cuperdec` Lets look a bit more 
+closely at the curves to by restricting the X-axis Ranks to 250 ranks.
+
+```{r}
+plot_cuperdec(curves, metadata_map, burnin_result, restrict_x = 250)
+```
+
+We definitely see that there are some Neanderthals that are excluded with
+a hard burnin of 10% despite having otherwise a curve pretty similar to other 
+Neanderthals. This could be because they have long tails, meaning that the 
+'peak' exceeding cut-off of 50% occurs within the first 10% of ranks, however
+this is still the region of the abundance rank that would give the strongest
+oral taxon signal in very old samples.
+
+## Adaptive Burnin
+
+Instead, we can try and customise the burn-in setting on a per-sample basis, 
+based on the amount of 'fluctuation' that occurs early in the curves (based
+on the small fraction denominators).
+
+This is performed here by only starting to considering whether a curve exceeds 
+the percentage target source threshold (50%), from the point at which the 
+difference of the percentage target source of one rank to the next, does not 
+exceed the standard-deviation of all differences.
+
+```{r}
+burnin_result <- adaptive_burnin_filter(curves, threshold = 50)
+plot_cuperdec(curves, metadata_map, burnin_result, restrict_x = 250)
+```
+
+Once we are happy that the curves appear to be distinguishing between 
+well-preserved samples and those with a low 'endogenous' microbial content, 
+we can use the list of samples that did not our thresholds to remove from 
+downstream analysis.
+
+```{r}
+discard_list <- burnin_result %>% filter(!Passed) 
+discard_list
+```
+
+## Custom filters
+
+You can of course write your own functions with your own filtering techniques,
+the only requirement is that you produce a two column output:
+
+* Sample: the names of each sample represented in the curves file.
+* Passed: a logical (TRUE/FALSE) column indicating whether a sample passed the 
+filter or not
