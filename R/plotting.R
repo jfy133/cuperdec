@@ -1,5 +1,9 @@
 #' Plot cumulative percent decay curves
 #'
+#' Generate visual representation of curves, with optional separate plotting
+#' of different groups, and also indication of individuals passing different
+#' on types filters.
+#'
 #' @param table output tibble from `calculate_curves()`
 #' @param metadata optional output from `load_map()`
 #' @param burnin_result optional output from `apply_*_burnin()` functions
@@ -35,11 +39,13 @@ plot_cuperdec <- function(table, metadata, burnin_result, restrict_x = 0) {
 
 }
 
-#' <Internal> Plot simple curves with no metadata or burnin
+#' Plot curves with no metadata or burnin
 #'
-#' Informs `plot_cuperdec()`
+#' Informs `plot_cuperdec()`, plots curves with no additional formatting.
 #'
 #' @param table output tibble from `calculate_curves()`
+#'
+#' @noRd
 
 plot_simple <- function(table) {
 
@@ -57,12 +63,15 @@ plot_simple <- function(table) {
 
 }
 
-#' <Internal> Plot simple curves with no sample group separataion but with burnin colouring
+#' Plot curves with burn-in filtering results
 #'
-#' Informs `plot_cuperdec()`
+#' Informs `plot_cuperdec()`, plots curves but with curve colouring based
+#' on whether a sample passed a given filter.
 #'
 #' @param table output tibble from `calculate_curves()`
 #' @param burnin_result optional output from `apply_*_burnin()` functions
+#'
+#' @noRd
 
 plot_burnin <- function(table, burnin_result) {
 
@@ -90,12 +99,15 @@ plot_burnin <- function(table, burnin_result) {
 
 }
 
-#' <Internal> Plot simple curves with sample group separation but no burnin colouring
+#' Plot simple curves with group facets
 #'
-#' Informs `plot_cuperdec()`
+#' Informs `plot_cuperdec()`, separates curves based on a grouping category,
+#' which places each group into a new facet.
 #'
 #' @param table output tibble from `calculate_curves()`
 #' @param metadata optional output from `load_map()`
+#'
+#' @noRd
 
 plot_grouped <- function(table, metadata) {
 
@@ -127,13 +139,17 @@ plot_grouped <- function(table, metadata) {
 
 }
 
-#' <Internal> Plot simple curves with sample group separation and burnin colouring
+#' Plot simple curves with group facets and burn-in filtering results
 #'
-#' Informs `plot_cuperdec()`
+#' Informs `plot_cuperdec()`, plots curves but with curve colouring based
+#' on whether a sample passed a given filter and separates curves of each
+#' group into a different facet.
 #'
 #' @param table output tibble from `calculate_curves()`
 #' @param metadata optional output from `load_map()`
 #' @param burnin_result optional output from `apply_*_burnin()` functions
+#'
+#' @noRd
 
 plot_grouped_burnin <- function(table, metadata, burnin_result) {
 

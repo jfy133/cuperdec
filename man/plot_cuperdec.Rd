@@ -13,8 +13,11 @@ plot_cuperdec(table, metadata, burnin_result, restrict_x = 0)
 
 \item{burnin_result}{optional output from `apply_*_burnin()` functions}
 
-\item{restrict_x}{optional restriction viewing of abundance rank to X number of ranks (useful for closer inspection of curves)}
+\item{restrict_x}{optional restriction viewing of abundance rank to X number
+of ranks (useful for closer inspection of curves)}
 }
 \description{
-Plot cumulative percent decay curves
+Generate visual representation of curves, with optional separate plotting
+of different groups, and also indication of individuals passing different
+on types filters.
 }
