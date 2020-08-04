@@ -9,15 +9,15 @@
 load_taxa_table <- function(x) {
 
   if (is.data.frame(x)) {
-    table <- x
+    input_table <- x
   } else {
-    table <- readr::read_tsv(x, col_types = readr::cols())
+    input_table <- readr::read_tsv(x, col_types = readr::cols())
   }
 
-  if (ncol(table) < 2)
+  if (ncol(input_table) < 2)
     stop("[cuperdec] error: your taxa table requires a minimum of 2 columns only: Taxon, Sample_1")
 
-  table %>%
+  input_table %>%
     dplyr::rename(Taxon = 1) %>%
     tidyr::pivot_longer(data = .,
                         names_to = "Sample",
@@ -40,15 +40,15 @@ load_taxa_table <- function(x) {
 load_database <- function(x, target) {
 
   if (is.data.frame(x)) {
-    table <- x
+    input_table <- x
   } else {
-    table <- readr::read_tsv(x, col_types = readr::cols())
+    input_table <- readr::read_tsv(x, col_types = readr::cols())
   }
 
-  if (ncol(table) != 2)
+  if (ncol(input_table) != 2)
     stop("[cuperdec] error: your isolation source database requires two columns only: Sample, Isolation Source.")
 
-  result <- table %>%
+  result <- input_table %>%
     dplyr::rename(Taxon = 1, Isolation_Source = 2) %>%
     dplyr::mutate(Isolation_Source = dplyr::case_when(.data$Isolation_Source != target ~ FALSE,
                                                       .data$Isolation_Source == target ~ TRUE,
@@ -78,21 +78,21 @@ load_database <- function(x, target) {
 load_map <- function(x, sample_col, source_col) {
 
   if (is.data.frame(x)) {
-    table <- x
+    input_table <- x
   } else {
-    table <- readr::read_tsv(x, col_types = readr::cols())
+    input_table <- readr::read_tsv(x, col_types = readr::cols())
   }
 
-  if (ncol(table) < 2)
+  if (ncol(input_table) < 2)
     stop("[cuperdec] error: your isolation source database a minimum of two columns: Sample, Sample Source.")
 
-  if (!sample_col %in% colnames(table))
+  if (!sample_col %in% colnames(input_table))
     stop("[cuperdec] error: your requested sample name column is not found in the dataframe!")
 
-  if (!source_col %in% colnames(table))
+  if (!source_col %in% colnames(input_table))
     stop("[cuperdec] error: your requested sample source column is not found in the dataframe!")
 
-  table %>%
+  input_table %>%
     dplyr::rename(Sample = sample_col, Sample_Source = source_col) %>%
     dplyr::select(.data$Sample, .data$Sample_Source)
 
