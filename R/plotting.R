@@ -56,6 +56,7 @@ plot_simple <- function(table) {
                                       .data$Fraction_Target,
                                       group = .data$Sample)) +
     ggplot2::geom_line() +
+    ggplot2::ylim(0, 100) +
     ggplot2::xlab("Abundance Rank") +
     ggplot2::ylab("Percentage Target Source") +
     ggplot2::theme_minimal()
@@ -93,13 +94,14 @@ plot_burnin <- function(table, burnin_result) {
                                            colour = .data$Passed)
   ) +
     ggplot2::geom_line() +
+    ggplot2::ylim(0, 100) +
     ggplot2::xlab("Abundance Rank") +
     ggplot2::ylab("Percentage Target Source") +
     ggplot2::theme_minimal()
 
 }
 
-#' Plot simple curves with group facets
+#' Plot curves with group facets
 #'
 #' Informs `plot_cuperdec()`, separates curves based on a grouping category,
 #' which places each group into a new facet.
@@ -132,6 +134,7 @@ plot_grouped <- function(table, metadata) {
                                            group = .data$Sample)
   ) +
     ggplot2::geom_line() +
+    ggplot2::ylim(0, 100) +
     ggplot2::xlab("Abundance Rank") +
     ggplot2::ylab("Percentage Target Source") +
     ggplot2::facet_wrap(~ Sample_Source) +
@@ -139,7 +142,7 @@ plot_grouped <- function(table, metadata) {
 
 }
 
-#' Plot simple curves with group facets and burn-in filtering results
+#' Plot curves with group facets and burn-in filtering results
 #'
 #' Informs `plot_cuperdec()`, plots curves but with curve colouring based
 #' on whether a sample passed a given filter and separates curves of each
@@ -175,6 +178,7 @@ plot_grouped_burnin <- function(table, metadata, burnin_result) {
                                            colour = .data$Passed)
   ) +
     ggplot2::geom_line() +
+    ggplot2::ylim(0, 100) +
     ggplot2::xlab("Abundance Rank") +
     ggplot2::ylab("Percentage Target Source") +
     ggplot2::facet_wrap(~ Sample_Source) +
