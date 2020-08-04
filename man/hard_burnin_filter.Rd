@@ -4,14 +4,14 @@
 \alias{hard_burnin_filter}
 \title{Calculate hard burnin retain/discard list}
 \usage{
-hard_burnin_filter(table, threshold, burnin)
+hard_burnin_filter(table, percent_threshold, rank_burnin)
 }
 \arguments{
 \item{table}{a tibble from `calculate_curve()`}
 
-\item{threshold}{a percentage of the target-source in a sample above which a sample is considered 'retained'}
+\item{percent_threshold}{a percentage of the target-source in a sample above which a sample is considered 'retained'}
 
-\item{burnin}{a number betwen 0 and 1 indicating the fraction of taxa to ignore before applying the threshold}
+\item{rank_burnin}{a number betwen 0 and 1 indicating the fraction of taxa to ignore before applying the threshold}
 }
 \description{
 Returns a table of whether each sample passess a given threshold, after

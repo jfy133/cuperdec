@@ -28,14 +28,14 @@ calculate_curve <- function(table, database) {
 #' source along a rank of most to least abundant taxa for a given sample.
 #'
 #' @param table a OTU table loaded with `load_taxa_table()`
-#' @param threshold a database file loaded with `load_database()`
+#' @param percent_threshold a database file loaded with `load_database()`
 #'
 #' @importFrom dplyr row_number
 #'
 #' @export
-simple_filter <- function(table, threshold) {
+simple_filter <- function(table, percent_threshold) {
   table %>%
-    dplyr::mutate(Pass = .data$Fraction_Target > threshold) %>%
+    dplyr::mutate(Pass = .data$Fraction_Target > percent_threshold) %>%
     dplyr::summarise(Passed = any(.data$Pass))
 }
 
@@ -45,23 +45,23 @@ simple_filter <- function(table, threshold) {
 #' considering a 'burn-in', in the form of a fraction of the abundance ranks
 #'
 #' @param table a tibble from `calculate_curve()`
-#' @param threshold a percentage of the target-source in a sample above which a sample is considered 'retained'
-#' @param burnin a number betwen 0 and 1 indicating the fraction of taxa to ignore before applying the threshold
+#' @param percent_threshold a percentage of the target-source in a sample above which a sample is considered 'retained'
+#' @param rank_burnin a number betwen 0 and 1 indicating the fraction of taxa to ignore before applying the threshold
 #'
 #' @export
 
-hard_burnin_filter <- function(table, threshold, burnin) {
+hard_burnin_filter <- function(table, percent_threshold, rank_burnin) {
 
   n_taxa <- table %>%
     dplyr::group_by(.data$Sample) %>%
     dplyr::summarise(N_Taxa = dplyr::n()) %>%
-    dplyr::mutate(Start = .data$N_Taxa * burnin)
+    dplyr::mutate(Start = .data$N_Taxa * rank_burnin)
 
   ## TODO: Ugly as shouldn't need the duiplicated values for joining but will
   ## keep now until think of more elegent solution
   table %>%
     dplyr::left_join(n_taxa, by = "Sample") %>%
-    dplyr::mutate(Pass = .data$Start > .data$Rank & .data$Fraction_Target > threshold) %>%
+    dplyr::mutate(Pass = .data$Start > .data$Rank & .data$Fraction_Target > percent_threshold) %>%
     dplyr::summarise(Passed = any(.data$Pass))
 
 }
@@ -74,12 +74,12 @@ hard_burnin_filter <- function(table, threshold, burnin) {
 #' the mean +- SD of the total curve.
 #'
 #' @param table a tibble from `calculate_curve()`
-#' @param threshold a percentage of the target-source in a sample above which a sample is considered 'retained'
+#' @param percent_threshold a percentage of the target-source in a sample above which a sample is considered 'retained'
 #'
 #' @importFrom stats sd
 #' @export
 
-adaptive_burnin_filter <- function(table, threshold) {
+adaptive_burnin_filter <- function(table, percent_threshold) {
 
 
   ## Find differences in percentage between each stepwise of rank
@@ -118,6 +118,6 @@ adaptive_burnin_filter <- function(table, threshold) {
    ## after defined burn-in rank
    table %>%
      dplyr::left_join(burnin_rank, by = c("Sample")) %>%
-     dplyr::mutate(Pass = .data$Rank > .data$Within_Limits + 1 & .data$Fraction_Target > threshold) %>%
+     dplyr::mutate(Pass = .data$Rank > .data$Within_Limits + 1 & .data$Fraction_Target > percent_threshold) %>%
      dplyr::summarise(Passed = any(.data$Pass))
 }

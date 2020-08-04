@@ -4,12 +4,12 @@
 \alias{adaptive_burnin_filter}
 \title{Calculate adaptive burnin retain/discard list}
 \usage{
-adaptive_burnin_filter(table, threshold)
+adaptive_burnin_filter(table, percent_threshold)
 }
 \arguments{
 \item{table}{a tibble from `calculate_curve()`}
 
-\item{threshold}{a percentage of the target-source in a sample above which a sample is considered 'retained'}
+\item{percent_threshold}{a percentage of the target-source in a sample above which a sample is considered 'retained'}
 }
 \description{
 This function automates a selection of a per-sample 'burn in' based on the

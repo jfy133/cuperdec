@@ -4,12 +4,12 @@
 \alias{simple_filter}
 \title{Apply simple filter}
 \usage{
-simple_filter(table, threshold)
+simple_filter(table, percent_threshold)
 }
 \arguments{
 \item{table}{a OTU table loaded with `load_taxa_table()`}
 
-\item{threshold}{a database file loaded with `load_database()`}
+\item{percent_threshold}{a database file loaded with `load_database()`}
 }
 \description{
 Performs the initial decay curve based on percentage of 'target' isolation

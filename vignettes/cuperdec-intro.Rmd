@@ -283,7 +283,7 @@ use `simple_filter()` to indicate any sample that does not exceed 50% at any
 point along the abundance rank.
 
 ```{r}
-filter_result <- simple_filter(curves, threshold = 50) %>% print()
+filter_result <- simple_filter(curves, percent_threshold = 50) %>% print()
 ```
 
 We can then supply this information as an additional paramter for plotting.
@@ -308,7 +308,7 @@ of 1.0). For example, lets ignore the first 10% ranks of each sample before
 checking if the curve goes above 50% of the target source.
 
 ```{r}
-burnin_result <- hard_burnin_filter(curves, threshold = 50, burnin = 0.1)
+burnin_result <- hard_burnin_filter(curves, percent_threshold = 50, rank_burnin = 0.1)
 plot_cuperdec(curves, metadata_map, burnin_result)
 ```
 
@@ -342,7 +342,7 @@ difference of the percentage target source of one rank to the next, does not
 exceed the standard-deviation of all differences.
 
 ```{r}
-burnin_result <- adaptive_burnin_filter(curves, threshold = 50)
+burnin_result <- adaptive_burnin_filter(curves, percent_threshold = 50)
 plot_cuperdec(curves, metadata_map, burnin_result, restrict_x = 250)
 ```
 
