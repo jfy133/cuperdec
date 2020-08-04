@@ -11,19 +11,8 @@
 #' @export
 calculate_curve <- function(taxa_table, database) {
 
-  if ( nrow(taxa_table) == 0 )
-    stop("[cuperdec] error: your (long format-) taxa table has no rows! Has it been converted correctly?")
-
-  if ( nrow(database) == 0 )
-    stop("[cuperdec] error: your database table has no rows! Has it been converted correctly?")
-
-  if ( ncol(taxa_table) < 3 || !any( c("Taxon", "Sample", "count") %in% colnames(taxa_table) ) )
-    stop("[cuperdec] error: your (long format-) taxa table requires a minimum of 3 columns: Taxon, Sample, Count")
-
-  if ( ncol(taxa_table) < 2 || !any( c("Taxon", "Isolation_Source") %in% colnames(taxa_table) ) )
-    stop("[cuperdec] error: your database table requires a minimum of 2 columns: Taxon, Isolation_Source")
-
-  if (database$Isolation_Source )
+  validate_taxatable(taxa_table)
+  validate_database(database)
 
   dplyr::left_join(taxa_table, database, by = c("Taxon")) %>%
     dplyr::arrange(.data$Sample, dplyr::desc(.data$Count)) %>%
@@ -41,14 +30,21 @@ calculate_curve <- function(taxa_table, database) {
 #' Performs the initial decay curve based on percentage of 'target' isolation
 #' source along a rank of most to least abundant taxa for a given sample.
 #'
-#' @param taxa_table a OTU table loaded with `load_taxa_table()`
+#' @param curves a cuperdec curve table calculated with `calculate_curves()`
 #' @param percent_threshold a database file loaded with `load_database()`
 #'
 #' @importFrom dplyr row_number
 #'
 #' @export
-simple_filter <- function(taxa_table, percent_threshold) {
-  taxa_table %>%
+
+simple_filter <- function(curves, percent_threshold) {
+
+  validate_curves(curves)
+
+  if (!is.numeric(percent_threshold))
+    stop("[cuperdec] error: percent_threshold must be numeric.")
+
+  curves %>%
     dplyr::mutate(Pass = .data$Fraction_Target > percent_threshold) %>%
     dplyr::summarise(Passed = any(.data$Pass))
 }
@@ -58,22 +54,30 @@ simple_filter <- function(taxa_table, percent_threshold) {
 #' Returns a table of whether each sample passess a given threshold, after
 #' considering a 'burn-in', in the form of a fraction of the abundance ranks
 #'
-#' @param taxa_table a tibble from `calculate_curve()`
+#' @param curves a cuperdec curve table calculated with `calculate_curves()`
 #' @param percent_threshold a percentage of the target-source in a sample above which a sample is considered 'retained'
 #' @param rank_burnin a number betwen 0 and 1 indicating the fraction of taxa to ignore before applying the threshold
 #'
 #' @export
 
-hard_burnin_filter <- function(taxa_table, percent_threshold, rank_burnin) {
+hard_burnin_filter <- function(curves, percent_threshold, rank_burnin) {
 
-  n_taxa <- taxa_table %>%
+  validate_curves(curves)
+
+  if (!is.numeric(percent_threshold))
+    stop("[cuperdec] error: percent_threshold must be numeric.")
+
+  if ( (!is.numeric(rank_burnin) || rank_burnin >= 1 ) || rank_burnin == 0 )
+    stop("[cuperdec] error: rank_burnin must be a decimal number less than 1 and more than 0")
+
+  n_taxa <- curves %>%
     dplyr::group_by(.data$Sample) %>%
     dplyr::summarise(N_Taxa = dplyr::n()) %>%
     dplyr::mutate(Start = .data$N_Taxa * rank_burnin)
 
   ## TODO: Ugly as shouldn't need the duiplicated values for joining but will
   ## keep now until think of more elegent solution
-  taxa_table %>%
+  curves %>%
     dplyr::left_join(n_taxa, by = "Sample") %>%
     dplyr::mutate(Pass = .data$Start > .data$Rank & .data$Fraction_Target > percent_threshold) %>%
     dplyr::summarise(Passed = any(.data$Pass))
@@ -87,17 +91,21 @@ hard_burnin_filter <- function(taxa_table, percent_threshold, rank_burnin) {
 #' finding the point from which the 'fluctuation' of the curve doesn't exceed
 #' the mean +- SD of the total curve.
 #'
-#' @param taxa_table a tibble from `calculate_curve()`
+#' @param curves a cuperdec curve table calculated with `calculate_curves()`
 #' @param percent_threshold a percentage of the target-source in a sample above which a sample is considered 'retained'
 #'
 #' @importFrom stats sd
 #' @export
 
-adaptive_burnin_filter <- function(taxa_table, percent_threshold) {
+adaptive_burnin_filter <- function(curves, percent_threshold) {
 
+  validate_curves(curves)
+
+  if (!is.numeric(percent_threshold))
+    stop("[cuperdec] error: percent_threshold must be numeric.")
 
   ## Find differences in percentage between each stepwise of rank
-  table_fluc <- taxa_table %>%
+  table_fluc <- curves %>%
     dplyr::mutate(Fluctuation = dplyr::lag(.data$Fraction_Target,
                                            1,
                                            default = 0) - .data$Fraction_Target)
@@ -130,7 +138,7 @@ adaptive_burnin_filter <- function(taxa_table, percent_threshold) {
 
    ## Find whether sample exceeds the user specified percentage target source,
    ## after defined burn-in rank
-   taxa_table %>%
+   curves %>%
      dplyr::left_join(burnin_rank, by = c("Sample")) %>%
      dplyr::mutate(Pass = .data$Rank > .data$Within_Limits + 1 & .data$Fraction_Target > percent_threshold) %>%
      dplyr::summarise(Passed = any(.data$Pass))

@@ -4,10 +4,10 @@
 \alias{plot_cuperdec}
 \title{Plot cumulative percent decay curves}
 \usage{
-plot_cuperdec(table, metadata, burnin_result, restrict_x = 0)
+plot_cuperdec(curves, metadata, burnin_result, restrict_x = 0)
 }
 \arguments{
-\item{table}{output tibble from `calculate_curves()`}
+\item{curves}{output tibble from `calculate_curves()`}
 
 \item{metadata}{optional output from `load_map()`}
 

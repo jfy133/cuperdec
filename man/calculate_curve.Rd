@@ -4,10 +4,10 @@
 \alias{calculate_curve}
 \title{Calculate curve}
 \usage{
-calculate_curve(table, database)
+calculate_curve(taxa_table, database)
 }
 \arguments{
-\item{table}{a OTU table loaded with `load_taxa_table()`}
+\item{taxa_table}{a OTU table loaded with `load_taxa_table()`}
 
 \item{database}{a database file loaded with `load_database()`}
 }

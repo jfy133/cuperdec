@@ -4,10 +4,10 @@
 \alias{hard_burnin_filter}
 \title{Calculate hard burnin retain/discard list}
 \usage{
-hard_burnin_filter(table, percent_threshold, rank_burnin)
+hard_burnin_filter(curves, percent_threshold, rank_burnin)
 }
 \arguments{
-\item{table}{a tibble from `calculate_curve()`}
+\item{curves}{a cuperdec curve table calculated with `calculate_curves()`}
 
 \item{percent_threshold}{a percentage of the target-source in a sample above which a sample is considered 'retained'}
 

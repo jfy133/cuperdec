@@ -4,10 +4,10 @@
 \alias{adaptive_burnin_filter}
 \title{Calculate adaptive burnin retain/discard list}
 \usage{
-adaptive_burnin_filter(table, percent_threshold)
+adaptive_burnin_filter(curves, percent_threshold)
 }
 \arguments{
-\item{table}{a tibble from `calculate_curve()`}
+\item{curves}{a cuperdec curve table calculated with `calculate_curves()`}
 
 \item{percent_threshold}{a percentage of the target-source in a sample above which a sample is considered 'retained'}
 }

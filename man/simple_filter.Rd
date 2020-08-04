@@ -4,10 +4,10 @@
 \alias{simple_filter}
 \title{Apply simple filter}
 \usage{
-simple_filter(table, percent_threshold)
+simple_filter(curves, percent_threshold)
 }
 \arguments{
-\item{table}{a OTU table loaded with `load_taxa_table()`}
+\item{curves}{a cuperdec curve table calculated with `calculate_curves()`}
 
 \item{percent_threshold}{a database file loaded with `load_database()`}
 }
