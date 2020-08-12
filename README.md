@@ -12,7 +12,7 @@ These curves aim to represent the level of 'endogenous' content of microbiome
 samples, such as ancient dental calculus, to help to identify samples with low
 levels of preservation that should be discarded for downstream analysis.
 
-# Installation
+## Installation
 
 This package is still in development. To install for testing, you can run
 the following
@@ -21,3 +21,6 @@ the following
 # install.packages("devtools")
 devtools::install_github("jfy133/cuperdec")
 ```
+## Acknowledgments
+
+Irina Velsko (@ivelsko), Zandra Fagernäs (@ZandraFagernas) and Lena Semerau for testing and bug reports.
