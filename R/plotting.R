@@ -13,6 +13,8 @@
 #' @export
 
 plot_cuperdec <- function(curves, metadata, burnin_result, restrict_x = 0) {
+
+  ## Validation
   validate_curves(curves)
 
   if (!missing(metadata)) {
@@ -31,6 +33,7 @@ plot_cuperdec <- function(curves, metadata, burnin_result, restrict_x = 0) {
     curves <- curves %>% dplyr::filter(.data$Rank <= restrict_x)
   }
 
+  ## Call corresponding plotting function
   if (missing(metadata) && missing(burnin_result)) {
     plot_simple(curves)
   } else if (missing(metadata)) {
@@ -73,12 +76,15 @@ plot_simple <- function(curves) {
 #' @noRd
 
 plot_burnin <- function(curves, burnin_result) {
+
+  ## Validation
+  validate_samples(curves, burnin_result)
+
+  ## Calculation
   table_meta <- dplyr::left_join(curves,
     burnin_result,
     by = c("Sample")
   )
-
-  ## TODO - check if all samples in original dataframe is in map, given left join!
 
   ggplot2::ggplot(table_meta, ggplot2::aes(.data$Rank,
     .data$Fraction_Target,
@@ -105,12 +111,11 @@ plot_burnin <- function(curves, burnin_result) {
 plot_grouped <- function(curves, metadata) {
   table_meta <- dplyr::left_join(curves, metadata, by = c("Sample"))
 
-  if (any(is.na(table_meta$Sample_Source))) {
-    stop("[cuperdec] error: one or more of your samples did not have an associated sample source in the metadata table, or sample names did not match.")
-  }
+  ## Validation
+  validate_samples(curves, metadata)
+  validate_samplesource(table_meta)
 
-  ## TODO - check if all samples in original dataframe is in map, given left join!
-
+  ## Plotting
   ggplot2::ggplot(table_meta, ggplot2::aes(.data$Rank,
     .data$Fraction_Target,
     group = .data$Sample
@@ -142,9 +147,9 @@ plot_grouped_burnin <- function(curves, metadata, burnin_result) {
   ) %>%
     dplyr::left_join(burnin_result, by = c("Sample"))
 
-  if (any(is.na(table_meta$Sample_Source))) {
-    stop("[cuperdec] error: one or more of your samples did not have an associated sample source in the metadata table, or sample names did not match.")
-  }
+  ## Validation
+  validate_samples(curves, metadata)
+  validate_samplesource(table_meta)
 
   ggplot2::ggplot(table_meta, ggplot2::aes(.data$Rank,
     .data$Fraction_Target,

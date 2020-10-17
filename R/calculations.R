@@ -10,9 +10,12 @@
 #'
 #' @export
 calculate_curve <- function(taxa_table, database) {
+
+  ## Validation
   validate_taxatable(taxa_table)
   validate_database(database)
 
+  ## Calculation
   dplyr::left_join(taxa_table, database, by = c("Taxon")) %>%
     dplyr::arrange(.data$Sample, dplyr::desc(.data$Count)) %>%
     tidyr::replace_na(list(Isolation_Source = FALSE)) %>%
@@ -36,12 +39,15 @@ calculate_curve <- function(taxa_table, database) {
 #' @export
 
 simple_filter <- function(curves, percent_threshold) {
+
+  ## Validation
   validate_curves(curves)
 
   if (!is.numeric(percent_threshold)) {
     stop("[cuperdec] error: percent_threshold must be numeric.")
   }
 
+  ## Calculation
   curves %>%
     dplyr::mutate(Pass = .data$Fraction_Target > percent_threshold) %>%
     dplyr::summarise(Passed = any(.data$Pass))
@@ -59,6 +65,8 @@ simple_filter <- function(curves, percent_threshold) {
 #' @export
 
 hard_burnin_filter <- function(curves, percent_threshold, rank_burnin) {
+
+  ## Validation
   validate_curves(curves)
 
   if (!is.numeric(percent_threshold)) {
@@ -69,12 +77,13 @@ hard_burnin_filter <- function(curves, percent_threshold, rank_burnin) {
     stop("[cuperdec] error: rank_burnin must be a decimal number less than 1 and more than 0")
   }
 
+  ## Calculation
   n_taxa <- curves %>%
     dplyr::group_by(.data$Sample) %>%
     dplyr::summarise(N_Taxa = dplyr::n()) %>%
     dplyr::mutate(Start = .data$N_Taxa * rank_burnin)
 
-  ## TODO: Ugly as shouldn't need the duiplicated values for joining but will
+  ## TODO: Ugly as shouldn't need the duplicated values for joining but will
   ## keep now until think of more elegent solution
   curves %>%
     dplyr::left_join(n_taxa, by = "Sample") %>%
@@ -96,11 +105,15 @@ hard_burnin_filter <- function(curves, percent_threshold, rank_burnin) {
 #' @export
 
 adaptive_burnin_filter <- function(curves, percent_threshold) {
+
+  ## Validation
   validate_curves(curves)
 
   if (!is.numeric(percent_threshold)) {
     stop("[cuperdec] error: percent_threshold must be numeric.")
   }
+
+  ## Calculation
 
   ## Find differences in percentage between each stepwise of rank
   table_fluc <- curves %>%

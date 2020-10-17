@@ -7,6 +7,8 @@
 #'
 #' @export
 load_taxa_table <- function(x) {
+
+  ## Validation
   if (is.data.frame(x)) {
     input_table <- x
   } else {
@@ -17,6 +19,7 @@ load_taxa_table <- function(x) {
     stop("[cuperdec] error: your taxa table requires a minimum of 2 columns only: Taxon, Sample_1")
   }
 
+  ## Processing
   input_table %>%
     dplyr::rename(Taxon = 1) %>%
     tidyr::pivot_longer(
@@ -40,6 +43,8 @@ load_taxa_table <- function(x) {
 #'
 #' @export
 load_database <- function(x, target) {
+
+  ## Validation
   if (is.data.frame(x)) {
     input_table <- x
   } else {
@@ -50,6 +55,7 @@ load_database <- function(x, target) {
     stop("[cuperdec] error: your isolation source database requires two columns only: Sample, Isolation Source.")
   }
 
+  ## Processing
   result <- input_table %>%
     dplyr::rename(Taxon = 1, Isolation_Source = 2) %>%
     dplyr::mutate(Isolation_Source = dplyr::case_when(
@@ -79,6 +85,8 @@ load_database <- function(x, target) {
 #'
 #' @export
 load_map <- function(x, sample_col, source_col) {
+
+  ## Validation
   if (is.data.frame(x)) {
     input_table <- x
   } else {
@@ -97,6 +105,7 @@ load_map <- function(x, sample_col, source_col) {
     stop("[cuperdec] error: your requested sample source column is not found in the dataframe!")
   }
 
+  ## Processing
   input_table %>%
     dplyr::rename(Sample = sample_col, Sample_Source = source_col) %>%
     dplyr::select(.data$Sample, .data$Sample_Source)

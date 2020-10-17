@@ -77,9 +77,12 @@ validate_curves <- function(curves) {
 #' @noRd
 
 validate_map <- function(metadata) {
-  if (ncol(metadata) < 2 || !all(c("Sample", "Sample_Source") %in% colnames(metadata))) {
+  if (ncol(metadata) < 2 || !all(c("Sample", "Sample_Source") %in% colnames(metadata)))
     stop("[cuperdec] error: missing column in input metadata/map table. Minimum required: Sample, Sample_Source. Is input from load_map()?")
-  }
+
+  if (any(is.na(metadata$Sample_Source)))
+    stop("[cuperdec] error: a sample has a sample source of NA. All samples must have an explicit source category.")
+
 }
 
 #' Validate filter table
@@ -96,6 +99,28 @@ validate_filter <- function(filter_table) {
   }
 
   if (!is.logical(filter_table$Passed)) {
-    stop("[cuperdec] error: burin filter 'Passed' column is not logical (i.e. TRUE/FALSE). Is input from an aurnin() function?")
+    stop("[cuperdec] error: burnin filter 'Passed' column is not logical (i.e. TRUE/FALSE). Is input from a burnin() function?")
   }
+}
+
+#' Validate filter table
+#'
+#' Internal validation that samples exist in both dataframes.
+#'
+#' @param table_a a cuperdec table
+#' @param table_b a different duperdec table to compare against
+#'
+#' @noRd
+
+validate_samples <- function(table_a, table_b) {
+  if (length(setdiff(table_a$Sample, table_b$Sample)) || length(setdiff(table_a$Sample, table_b$Sample)) > 1) {
+    stop("[cuperdec] error: not all samples exist in both input tables, check for errors in inputs!")
+  }
+}
+
+validate_samplesource <- function(input_table){
+  if (any(is.na(input_table$Sample_Source))) {
+    stop("[cuperdec] error: one or more of your samples did not have an associated sample source in the metadata table, or sample names did not match.")
+  }
+
 }
