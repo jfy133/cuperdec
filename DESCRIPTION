@@ -1,31 +1,30 @@
 Package: cuperdec
 Type: Package
 Title: Cumulative Percent Decay Curve Calculater
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: person(given = "James", 
                   family = "Fellows Yates", 
                   email = "jfy133@gmail.com",
                   role = c("aut", "cre"),
                   comment = c(ORCID = "0000-0001-5585-6277"))
-Description: This library contains helper functions to generate cumulative 
-    percent 'decay' curves, which are calculated from metagenomic taxonomic 
-    profiles. These can be used to estimate the level of 'endogenous' taxa 
-    retrieved from metagenomic samples, when comparing to samples of known
-    sampling site or source.
+Description: This library calculates and visualises cumulatives percent 'decay' 
+    curves, which are typically calculated from metagenomic taxonomic profiles. 
+    These can be used to estimate the level of expected 'endogenous' taxa at 
+    different abundance levels retrieved from metagenomic samples, when 
+    comparing to samples of known sampling site or source.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: dplyr, readr, magrittr, tidyr, ggplot2, rlang, tibble
+Imports: dplyr, readr, magrittr, tidyr, ggplot2, rlang
 RoxygenNote: 7.1.1
 NeedsCompilation: no
 Packaged: 2020-05-18 13:34:27 UTC; fellows@shh.mpg.de
 Author: James Fellows Yates [aut, cre]
-Maintainer: James Fellows Yates <jfy133@gmail.com>
+Maintainer: James A. Fellows Yates <jfy133@gmail.com>
 URL: https://github.com/jfy133/cuperdec
 BugReports: https://github.com/jfy133/cuperdec/issues
 Suggests: 
     knitr,
     rmarkdown,
     testthat,
-    covr
 VignetteBuilder: knitr

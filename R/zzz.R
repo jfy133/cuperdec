@@ -3,7 +3,7 @@
 # see http://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
 globalVariables(".")
 
-#'@importFrom rlang .data
+#' @importFrom rlang .data
 NULL
 
 #' Pipe operator

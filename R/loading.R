@@ -7,22 +7,24 @@
 #'
 #' @export
 load_taxa_table <- function(x) {
-
   if (is.data.frame(x)) {
     input_table <- x
   } else {
     input_table <- readr::read_tsv(x, col_types = readr::cols())
   }
 
-  if (ncol(input_table) < 2)
+  if (ncol(input_table) < 2) {
     stop("[cuperdec] error: your taxa table requires a minimum of 2 columns only: Taxon, Sample_1")
+  }
 
   input_table %>%
     dplyr::rename(Taxon = 1) %>%
-    tidyr::pivot_longer(data = .,
-                        names_to = "Sample",
-                        values_to = "Count",
-                        cols = -dplyr::matches("Taxon"))  %>%
+    tidyr::pivot_longer(
+      data = .,
+      names_to = "Sample",
+      values_to = "Count",
+      cols = -dplyr::matches("Taxon")
+    ) %>%
     dplyr::filter(.data$Count != 0)
 }
 
@@ -38,28 +40,29 @@ load_taxa_table <- function(x) {
 #'
 #' @export
 load_database <- function(x, target) {
-
   if (is.data.frame(x)) {
     input_table <- x
   } else {
     input_table <- readr::read_tsv(x, col_types = readr::cols())
   }
 
-  if (ncol(input_table) != 2)
+  if (ncol(input_table) != 2) {
     stop("[cuperdec] error: your isolation source database requires two columns only: Sample, Isolation Source.")
+  }
 
   result <- input_table %>%
     dplyr::rename(Taxon = 1, Isolation_Source = 2) %>%
-    dplyr::mutate(Isolation_Source = dplyr::case_when(.data$Isolation_Source != target ~ FALSE,
-                                                      .data$Isolation_Source == target ~ TRUE,
-                                                      TRUE ~ FALSE)
-                  )
+    dplyr::mutate(Isolation_Source = dplyr::case_when(
+      .data$Isolation_Source != target ~ FALSE,
+      .data$Isolation_Source == target ~ TRUE,
+      TRUE ~ FALSE
+    ))
 
-  if (!any(result$Isolation_Source))
+  if (!any(result$Isolation_Source)) {
     stop("[cuperdec] error: your supplied target source was not found in your isolation source column!")
+  }
 
   return(result)
-
 }
 
 #' Load metadata table
@@ -76,24 +79,25 @@ load_database <- function(x, target) {
 #'
 #' @export
 load_map <- function(x, sample_col, source_col) {
-
   if (is.data.frame(x)) {
     input_table <- x
   } else {
     input_table <- readr::read_tsv(x, col_types = readr::cols())
   }
 
-  if (ncol(input_table) < 2)
+  if (ncol(input_table) < 2) {
     stop("[cuperdec] error: your isolation source database a minimum of two columns: Sample, Sample Source.")
+  }
 
-  if (!sample_col %in% colnames(input_table))
+  if (!sample_col %in% colnames(input_table)) {
     stop("[cuperdec] error: your requested sample name column is not found in the dataframe!")
+  }
 
-  if (!source_col %in% colnames(input_table))
+  if (!source_col %in% colnames(input_table)) {
     stop("[cuperdec] error: your requested sample source column is not found in the dataframe!")
+  }
 
   input_table %>%
     dplyr::rename(Sample = sample_col, Sample_Source = source_col) %>%
     dplyr::select(.data$Sample, .data$Sample_Source)
-
 }

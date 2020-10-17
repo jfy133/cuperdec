@@ -10,7 +10,6 @@
 #'
 #' @export
 calculate_curve <- function(taxa_table, database) {
-
   validate_taxatable(taxa_table)
   validate_database(database)
 
@@ -22,7 +21,6 @@ calculate_curve <- function(taxa_table, database) {
     dplyr::mutate(Cumulative_Sum = cumsum(.data$Isolation_Source)) %>%
     dplyr::mutate(Fraction_Target = (.data$Cumulative_Sum / .data$Rank) * 100) %>%
     dplyr::select(.data$Sample, .data$Taxon, .data$Rank, .data$Fraction_Target)
-
 }
 
 #' Apply simple filter
@@ -38,11 +36,11 @@ calculate_curve <- function(taxa_table, database) {
 #' @export
 
 simple_filter <- function(curves, percent_threshold) {
-
   validate_curves(curves)
 
-  if (!is.numeric(percent_threshold))
+  if (!is.numeric(percent_threshold)) {
     stop("[cuperdec] error: percent_threshold must be numeric.")
+  }
 
   curves %>%
     dplyr::mutate(Pass = .data$Fraction_Target > percent_threshold) %>%
@@ -61,14 +59,15 @@ simple_filter <- function(curves, percent_threshold) {
 #' @export
 
 hard_burnin_filter <- function(curves, percent_threshold, rank_burnin) {
-
   validate_curves(curves)
 
-  if (!is.numeric(percent_threshold))
+  if (!is.numeric(percent_threshold)) {
     stop("[cuperdec] error: percent_threshold must be numeric.")
+  }
 
-  if ( (!is.numeric(rank_burnin) || rank_burnin >= 1 ) || rank_burnin == 0 )
+  if ((!is.numeric(rank_burnin) || rank_burnin >= 1) || rank_burnin == 0) {
     stop("[cuperdec] error: rank_burnin must be a decimal number less than 1 and more than 0")
+  }
 
   n_taxa <- curves %>%
     dplyr::group_by(.data$Sample) %>%
@@ -79,9 +78,8 @@ hard_burnin_filter <- function(curves, percent_threshold, rank_burnin) {
   ## keep now until think of more elegent solution
   curves %>%
     dplyr::left_join(n_taxa, by = "Sample") %>%
-    dplyr::mutate(Pass = .data$Rank > .data$Start  & .data$Fraction_Target > percent_threshold) %>%
+    dplyr::mutate(Pass = .data$Rank > .data$Start & .data$Fraction_Target > percent_threshold) %>%
     dplyr::summarise(Passed = any(.data$Pass))
-
 }
 
 #' Calculate adaptive burnin retain/discard list
@@ -98,17 +96,18 @@ hard_burnin_filter <- function(curves, percent_threshold, rank_burnin) {
 #' @export
 
 adaptive_burnin_filter <- function(curves, percent_threshold) {
-
   validate_curves(curves)
 
-  if (!is.numeric(percent_threshold))
+  if (!is.numeric(percent_threshold)) {
     stop("[cuperdec] error: percent_threshold must be numeric.")
+  }
 
   ## Find differences in percentage between each stepwise of rank
   table_fluc <- curves %>%
     dplyr::mutate(Fluctuation = dplyr::lag(.data$Fraction_Target,
-                                           1,
-                                           default = 0) - .data$Fraction_Target)
+      1,
+      default = 0
+    ) - .data$Fraction_Target)
 
   ## Calculate per-sample the mean +- SD of
   ## stepwise-rank-percentage-target-differences, with + as upper limit and -
@@ -116,30 +115,36 @@ adaptive_burnin_filter <- function(curves, percent_threshold) {
   limits <- table_fluc %>%
     dplyr::select(.data$Sample, .data$Fluctuation) %>%
     dplyr::group_by(.data$Sample) %>%
-    dplyr::summarise(mean(.data$Fluctuation),
-              sd(.data$Fluctuation),
-              min(.data$Fluctuation),
-              max(.data$Fluctuation)) %>%
-    dplyr::mutate(Upper_Limit = .data$`mean(.data$Fluctuation)` + .data$`sd(.data$Fluctuation)`,
-           Lower_Limit = .data$`mean(.data$Fluctuation)` - .data$`sd(.data$Fluctuation)`) %>%
+    dplyr::summarise(
+      mean(.data$Fluctuation),
+      sd(.data$Fluctuation),
+      min(.data$Fluctuation),
+      max(.data$Fluctuation)
+    ) %>%
+    dplyr::mutate(
+      Upper_Limit = .data$`mean(.data$Fluctuation)` + .data$`sd(.data$Fluctuation)`,
+      Lower_Limit = .data$`mean(.data$Fluctuation)` - .data$`sd(.data$Fluctuation)`
+    ) %>%
     dplyr::select(.data$Sample, .data$Upper_Limit, .data$Lower_Limit)
 
 
   ## Find the position from which the difference stops exceeding the rank limits
-   burnin_rank <- dplyr::left_join(table_fluc, limits, by = c("Sample")) %>%
-     dplyr::mutate(Exceed_Limits = dplyr::if_else(.data$Fluctuation < .data$Upper_Limit &
-                                             .data$Fluctuation > .data$Lower_Limit,
-                                          F,
-                                          T)) %>%
-     dplyr::filter(.data$Exceed_Limits) %>%
-     dplyr::slice(dplyr::n()) %>%
-     dplyr::select(.data$Sample, .data$Rank) %>%
-     dplyr::rename(Within_Limits = .data$Rank)
+  burnin_rank <- dplyr::left_join(table_fluc, limits, by = c("Sample")) %>%
+    dplyr::mutate(Exceed_Limits = dplyr::if_else(
+      .data$Fluctuation < .data$Upper_Limit &
+        .data$Fluctuation > .data$Lower_Limit,
+      F,
+      T
+    )) %>%
+    dplyr::filter(.data$Exceed_Limits) %>%
+    dplyr::slice(dplyr::n()) %>%
+    dplyr::select(.data$Sample, .data$Rank) %>%
+    dplyr::rename(Within_Limits = .data$Rank)
 
-   ## Find whether sample exceeds the user specified percentage target source,
-   ## after defined burn-in rank
-   curves %>%
-     dplyr::left_join(burnin_rank, by = c("Sample")) %>%
-     dplyr::mutate(Pass = .data$Rank > .data$Within_Limits + 1 & .data$Fraction_Target > percent_threshold) %>%
-     dplyr::summarise(Passed = any(.data$Pass))
+  ## Find whether sample exceeds the user specified percentage target source,
+  ## after defined burn-in rank
+  curves %>%
+    dplyr::left_join(burnin_rank, by = c("Sample")) %>%
+    dplyr::mutate(Pass = .data$Rank > .data$Within_Limits + 1 & .data$Fraction_Target > percent_threshold) %>%
+    dplyr::summarise(Passed = any(.data$Pass))
 }
