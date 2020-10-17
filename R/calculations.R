@@ -83,8 +83,8 @@ hard_burnin_filter <- function(curves, percent_threshold, rank_burnin) {
     dplyr::summarise(N_Taxa = dplyr::n()) %>%
     dplyr::mutate(Start = .data$N_Taxa * rank_burnin)
 
-  ## TODO: Ugly as shouldn't need the duplicated values for joining but will
-  ## keep now until think of more elegent solution
+  ## Note: This is ugly as shouldn't need the duplicated values for joining but
+  ## will keep for now until think of more elegent solution
   curves %>%
     dplyr::left_join(n_taxa, by = "Sample") %>%
     dplyr::mutate(Pass = .data$Rank > .data$Start & .data$Fraction_Target > percent_threshold) %>%
