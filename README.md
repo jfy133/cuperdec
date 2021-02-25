@@ -3,6 +3,7 @@
 [![R build status](https://github.com/jfy133/cuperdec/workflows/R-CMD-check/badge.svg)](https://github.com/jfy133/cuperdec/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version/cuperdec)](https://CRAN.R-project.org/package=cuperdec)
 [![Codecov test coverage](https://codecov.io/gh/jfy133/cuperdec/branch/master/graph/badge.svg)](https://codecov.io/gh/jfy133/cuperdec?branch=master)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4561901.svg)](https://doi.org/10.5281/zenodo.4561901)
 <!-- badges: end -->
 
 R library to generate 'Cumulative Percent Decay' curves, with optional 
