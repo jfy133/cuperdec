@@ -94,7 +94,7 @@ load_map <- function(x, sample_col, source_col) {
   }
 
   if (ncol(input_table) < 2) {
-    stop("[cuperdec] error: your isolation source database a minimum of two columns: Sample, Sample Source.")
+    stop("[cuperdec] error: your metadata database a minimum of two columns: Sample, Sample Source.")
   }
 
   if (!sample_col %in% colnames(input_table)) {
