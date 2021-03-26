@@ -1,4 +1,4 @@
-# cuperdec <img src='man/figures/cuperdec_logo.png' align="right" height="40%" width="40%" />
+# cuperdec <img src='man/figures/cuperdec_logo.png' align="right" height="50%" width="50%" />
 <!-- badges: start -->
 [![R build status](https://github.com/jfy133/cuperdec/workflows/R-CMD-check/badge.svg)](https://github.com/jfy133/cuperdec/actions)
 [![Codecov test coverage](https://codecov.io/gh/jfy133/cuperdec/branch/master/graph/badge.svg)](https://codecov.io/gh/jfy133/cuperdec?branch=master)
