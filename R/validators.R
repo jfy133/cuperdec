@@ -8,11 +8,16 @@
 
 validate_taxatable <- function(taxa_table) {
   if (nrow(taxa_table) == 0) {
-    stop("[cuperdec] error: your (long format-) taxa table has no rows! Has it been converted correctly?")
+    stop(
+      "[cuperdec] error: your (long format-) taxa table has no rows! Has it been converted correctly?"
+    )
   }
 
-  if (ncol(taxa_table) < 3 || !all(c("Taxon", "Sample", "Count") %in% colnames(taxa_table))) {
-    stop("[cuperdec] error: your (long format-) taxa table requires a minimum of 3 columns: Taxon, Sample, Count")
+  if (ncol(taxa_table) < 3 ||
+      !all(c("Taxon", "Sample", "Count") %in% colnames(taxa_table))) {
+    stop(
+      "[cuperdec] error: your (long format-) taxa table requires a minimum of 3 columns: Taxon, Sample, Count"
+    )
   }
 
   if (!is.numeric(taxa_table$Count)) {
@@ -30,15 +35,22 @@ validate_taxatable <- function(taxa_table) {
 
 validate_database <- function(database) {
   if (nrow(database) == 0) {
-    stop("[cuperdec] error: your (long format-) taxa table has no rows! Has it been converted correctly?")
+    stop(
+      "[cuperdec] error: your (long format-) taxa table has no rows! Has it been converted correctly?"
+    )
   }
 
-  if (ncol(database) < 2 || !all(c("Taxon", "Isolation_Source") %in% colnames(database))) {
-    stop("[cuperdec] error: your database table requires a minimum of 2 columns: Taxon, Isolation_Source")
+  if (ncol(database) < 2 ||
+      !all(c("Taxon", "Isolation_Source") %in% colnames(database))) {
+    stop(
+      "[cuperdec] error: your database table requires a minimum of 2 columns: Taxon, Isolation_Source"
+    )
   }
 
   if (!is.logical(database$Isolation_Source)) {
-    stop("[cuperdec] error: the 'Isolation_Source' column of your taxatable is not logical. Has it been converted correctly?")
+    stop(
+      "[cuperdec] error: the 'Isolation_Source' column of your taxatable is not logical. Has it been converted correctly?"
+    )
   }
 }
 
@@ -52,19 +64,28 @@ validate_database <- function(database) {
 
 validate_curves <- function(curves) {
   if (nrow(curves) == 0) {
-    stop("[cuperdec] error: your cuperdec curves table has no rows! Has it been converted correctly?")
+    stop(
+      "[cuperdec] error: your cuperdec curves table has no rows! Has it been converted correctly?"
+    )
   }
 
-  if (ncol(curves) < 4 || !all(c("Sample", "Taxon", "Rank", "Fraction_Target") %in% colnames(curves))) {
-    stop("[cuperdec] error: your cuperdec curves requires a minimum of 4 columns: Sample, Taxon, Rank, Fraction_Target")
+  if (ncol(curves) < 4 ||
+      !all(c("Sample", "Taxon", "Rank", "Fraction_Target") %in% colnames(curves))) {
+    stop(
+      "[cuperdec] error: your cuperdec curves requires a minimum of 4 columns: Sample, Taxon, Rank, Fraction_Target"
+    )
   }
 
   if (!is.numeric(curves$Rank)) {
-    stop("[cuperdec] error: the 'Rank' column of your cuperdec curves table is not numeric. Has the curves been generated correctly?")
+    stop(
+      "[cuperdec] error: the 'Rank' column of your cuperdec curves table is not numeric. Has the curves been generated correctly?"
+    )
   }
 
   if (!is.numeric(curves$Fraction_Target)) {
-    stop("[cuperdec] error: the 'Fraction_target' column of your cuperdec curves table is not numeric. Has the curves been generated correctly?")
+    stop(
+      "[cuperdec] error: the 'Fraction_target' column of your cuperdec curves table is not numeric. Has the curves been generated correctly?"
+    )
   }
 }
 
@@ -77,11 +98,16 @@ validate_curves <- function(curves) {
 #' @noRd
 
 validate_map <- function(metadata) {
-  if (ncol(metadata) < 2 || !all(c("Sample", "Sample_Source") %in% colnames(metadata)))
-    stop("[cuperdec] error: missing column in input metadata/map table. Minimum required: Sample, Sample_Source. Is input from load_map()?")
+  if (ncol(metadata) < 2 ||
+      !all(c("Sample", "Sample_Source") %in% colnames(metadata)))
+    stop(
+      "[cuperdec] error: missing column in input metadata/map table. Minimum required: Sample, Sample_Source. Is input from load_map()?"
+    )
 
   if (any(is.na(metadata$Sample_Source)))
-    stop("[cuperdec] error: a sample has a sample source of NA. All samples must have an explicit source category.")
+    stop(
+      "[cuperdec] error: a sample has a sample source of NA. All samples must have an explicit source category."
+    )
 
 }
 
@@ -94,12 +120,17 @@ validate_map <- function(metadata) {
 #' @noRd
 
 validate_filter <- function(filter_table) {
-  if (ncol(filter_table) < 2 || !all(c("Sample", "Passed") %in% colnames(filter_table))) {
-    stop("[cuperdec] error: missing column in input table. Minimum required: Sample, Passed. Is input from a  *_filter() function?")
+  if (ncol(filter_table) < 2 ||
+      !all(c("Sample", "Passed") %in% colnames(filter_table))) {
+    stop(
+      "[cuperdec] error: missing column in input table. Minimum required: Sample, Passed. Is input from a  *_filter() function?"
+    )
   }
 
   if (!is.logical(filter_table$Passed)) {
-    stop("[cuperdec] error: burnin filter 'Passed' column is not logical (i.e. TRUE/FALSE). Is input from a burnin() function?")
+    stop(
+      "[cuperdec] error: burnin filter 'Passed' column is not logical (i.e. TRUE/FALSE). Is input from a burnin() function?"
+    )
   }
 }
 
@@ -113,14 +144,19 @@ validate_filter <- function(filter_table) {
 #' @noRd
 
 validate_samples <- function(table_a, table_b) {
-  if (length(setdiff(table_a$Sample, table_b$Sample)) || length(setdiff(table_a$Sample, table_b$Sample)) > 1) {
-    stop("[cuperdec] error: not all samples exist in both input tables, check for errors in inputs!")
+  if (length(setdiff(table_a$Sample, table_b$Sample)) ||
+      length(setdiff(table_a$Sample, table_b$Sample)) > 1) {
+    stop(
+      "[cuperdec] error: not all samples exist in both input tables, check for errors in inputs!"
+    )
   }
 }
 
-validate_samplesource <- function(input_table){
+validate_samplesource <- function(input_table) {
   if (any(is.na(input_table$Sample_Source))) {
-    stop("[cuperdec] error: one or more of your samples did not have an associated sample source in the metadata table, or sample names did not match.")
+    stop(
+      "[cuperdec] error: one or more of your samples did not have an associated sample source in the metadata table, or sample names did not match."
+    )
   }
 
 }

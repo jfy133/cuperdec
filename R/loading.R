@@ -7,7 +7,6 @@
 #'
 #' @export
 load_taxa_table <- function(x) {
-
   ## Validation
   if (is.data.frame(x)) {
     input_table <- x
@@ -16,7 +15,9 @@ load_taxa_table <- function(x) {
   }
 
   if (ncol(input_table) < 2) {
-    stop("[cuperdec] error: your taxa table requires a minimum of 2 columns only: Taxon, Sample_1")
+    stop(
+      "[cuperdec] error: your taxa table requires a minimum of 2 columns only: Taxon, Sample_1"
+    )
   }
 
   ## Processing
@@ -43,7 +44,6 @@ load_taxa_table <- function(x) {
 #'
 #' @export
 load_database <- function(x, target) {
-
   ## Validation
   if (is.data.frame(x)) {
     input_table <- x
@@ -52,20 +52,26 @@ load_database <- function(x, target) {
   }
 
   if (ncol(input_table) != 2) {
-    stop("[cuperdec] error: your isolation source database requires two columns only: Sample, Isolation Source.")
+    stop(
+      "[cuperdec] error: your isolation source database requires two columns only: Sample, Isolation Source."
+    )
   }
 
   ## Processing
   result <- input_table %>%
     dplyr::rename(Taxon = 1, Isolation_Source = 2) %>%
-    dplyr::mutate(Isolation_Source = dplyr::case_when(
-      .data$Isolation_Source != target ~ FALSE,
-      .data$Isolation_Source == target ~ TRUE,
-      TRUE ~ FALSE
-    ))
+    dplyr::mutate(
+      Isolation_Source = dplyr::case_when(
+        .data$Isolation_Source != target ~ FALSE,
+        .data$Isolation_Source == target ~ TRUE,
+        TRUE ~ FALSE
+      )
+    )
 
   if (!any(result$Isolation_Source)) {
-    stop("[cuperdec] error: your supplied target source was not found in your isolation source column!")
+    stop(
+      "[cuperdec] error: your supplied target source was not found in your isolation source column!"
+    )
   }
 
   return(result)
@@ -85,7 +91,6 @@ load_database <- function(x, target) {
 #'
 #' @export
 load_map <- function(x, sample_col, source_col) {
-
   ## Validation
   if (is.data.frame(x)) {
     input_table <- x
@@ -94,7 +99,9 @@ load_map <- function(x, sample_col, source_col) {
   }
 
   if (ncol(input_table) < 2) {
-    stop("[cuperdec] error: your metadata database a minimum of two columns: Sample, Sample Source.")
+    stop(
+      "[cuperdec] error: your metadata database a minimum of two columns: Sample, Sample Source."
+    )
   }
 
   if (!sample_col %in% colnames(input_table)) {

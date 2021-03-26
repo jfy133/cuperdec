@@ -1,24 +1,21 @@
 library(cuperdec)
 
 raw_table <- system.file("extdata",
-  "example_taxatable.tsv",
-  package = "cuperdec"
-)
+                         "example_taxatable.tsv",
+                         package = "cuperdec")
 raw_database <- system.file("extdata",
-  "example_database.tsv",
-  package = "cuperdec"
-)
+                            "example_database.tsv",
+                            package = "cuperdec")
 raw_metadata <- system.file("extdata",
-  "example_metadata.tsv",
-  package = "cuperdec"
-)
+                            "example_metadata.tsv",
+                            package = "cuperdec")
 
-table <- cuperdec::load_taxa_table(raw_table)
+taxatable <- cuperdec::load_taxa_table(raw_table)
 database <- cuperdec::load_database(raw_database, "oral")
 metadata <- load_map(raw_metadata, "#SampleID", "Env")
 
 ## calculate_curve
-curve <- calculate_curve(table, database)
+curve <- calculate_curve(taxatable, database)
 
 testthat::test_that("Curves calculated as expected", {
   testthat::expect_named(curve, c("Sample", "Taxon", "Rank", "Fraction_Target"))
@@ -69,4 +66,3 @@ testthat::test_that("Adaptive burn-in works as expected", {
 testthat::test_that("Adaptive filter inputs are valid", {
   testthat::expect_error(adaptive_burnin_filter(curve, "50"))
 })
-

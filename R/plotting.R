@@ -12,38 +12,41 @@
 #'
 #' @export
 
-plot_cuperdec <- function(curves, metadata, burnin_result, restrict_x = 0) {
+plot_cuperdec <-
+  function(curves,
+           metadata,
+           burnin_result,
+           restrict_x = 0) {
+    ## Validation
+    validate_curves(curves)
 
-  ## Validation
-  validate_curves(curves)
+    if (!missing(metadata)) {
+      validate_map(metadata)
+    }
 
-  if (!missing(metadata)) {
-    validate_map(metadata)
+    if (!missing(burnin_result)) {
+      validate_filter(burnin_result)
+    }
+
+    if (!is.numeric(restrict_x)) {
+      stop("[cuperdec] error: restrict_x must be numeric")
+    }
+
+    if (restrict_x != 0) {
+      curves <- curves %>% dplyr::filter(.data$Rank <= restrict_x)
+    }
+
+    ## Call corresponding plotting function
+    if (missing(metadata) && missing(burnin_result)) {
+      plot_simple(curves)
+    } else if (missing(metadata)) {
+      plot_burnin(curves, burnin_result)
+    } else if (missing(burnin_result)) {
+      plot_grouped(curves, metadata)
+    } else {
+      plot_grouped_burnin(curves, metadata, burnin_result)
+    }
   }
-
-  if (!missing(burnin_result)) {
-    validate_filter(burnin_result)
-  }
-
-  if (!is.numeric(restrict_x)) {
-    stop("[cuperdec] error: restrict_x must be numeric")
-  }
-
-  if (restrict_x != 0) {
-    curves <- curves %>% dplyr::filter(.data$Rank <= restrict_x)
-  }
-
-  ## Call corresponding plotting function
-  if (missing(metadata) && missing(burnin_result)) {
-    plot_simple(curves)
-  } else if (missing(metadata)) {
-    plot_burnin(curves, burnin_result)
-  } else if (missing(burnin_result)) {
-    plot_grouped(curves, metadata)
-  } else {
-    plot_grouped_burnin(curves, metadata, burnin_result)
-  }
-}
 
 #' Plot curves with no metadata or burnin
 #'
@@ -54,10 +57,10 @@ plot_cuperdec <- function(curves, metadata, burnin_result, restrict_x = 0) {
 #' @noRd
 
 plot_simple <- function(curves) {
-  ggplot2::ggplot(curves, ggplot2::aes(.data$Rank,
-    .data$Fraction_Target,
-    group = .data$Sample
-  )) +
+  ggplot2::ggplot(curves,
+                  ggplot2::aes(.data$Rank,
+                               .data$Fraction_Target,
+                               group = .data$Sample)) +
     ggplot2::geom_line() +
     ggplot2::ylim(0, 100) +
     ggplot2::xlab("Abundance Rank") +
@@ -76,21 +79,23 @@ plot_simple <- function(curves) {
 #' @noRd
 
 plot_burnin <- function(curves, burnin_result) {
-
   ## Validation
   validate_samples(curves, burnin_result)
 
   ## Calculation
   table_meta <- dplyr::left_join(curves,
-    burnin_result,
-    by = c("Sample")
-  )
+                                 burnin_result,
+                                 by = c("Sample"))
 
-  ggplot2::ggplot(table_meta, ggplot2::aes(.data$Rank,
-    .data$Fraction_Target,
-    group = .data$Sample,
-    colour = .data$Passed
-  )) +
+  ggplot2::ggplot(
+    table_meta,
+    ggplot2::aes(
+      .data$Rank,
+      .data$Fraction_Target,
+      group = .data$Sample,
+      colour = .data$Passed
+    )
+  ) +
     ggplot2::geom_line() +
     ggplot2::ylim(0, 100) +
     ggplot2::xlab("Abundance Rank") +
@@ -116,15 +121,15 @@ plot_grouped <- function(curves, metadata) {
   validate_samplesource(table_meta)
 
   ## Plotting
-  ggplot2::ggplot(table_meta, ggplot2::aes(.data$Rank,
-    .data$Fraction_Target,
-    group = .data$Sample
-  )) +
+  ggplot2::ggplot(table_meta,
+                  ggplot2::aes(.data$Rank,
+                               .data$Fraction_Target,
+                               group = .data$Sample)) +
     ggplot2::geom_line() +
     ggplot2::ylim(0, 100) +
     ggplot2::xlab("Abundance Rank") +
     ggplot2::ylab("Percentage Target Source") +
-    ggplot2::facet_wrap(~Sample_Source) +
+    ggplot2::facet_wrap( ~ Sample_Source) +
     ggplot2::theme_minimal()
 }
 
@@ -142,24 +147,27 @@ plot_grouped <- function(curves, metadata) {
 
 plot_grouped_burnin <- function(curves, metadata, burnin_result) {
   table_meta <- dplyr::left_join(curves,
-    metadata,
-    by = c("Sample")
-  ) %>%
+                                 metadata,
+                                 by = c("Sample")) %>%
     dplyr::left_join(burnin_result, by = c("Sample"))
 
   ## Validation
   validate_samples(curves, metadata)
   validate_samplesource(table_meta)
 
-  ggplot2::ggplot(table_meta, ggplot2::aes(.data$Rank,
-    .data$Fraction_Target,
-    group = .data$Sample,
-    colour = .data$Passed
-  )) +
+  ggplot2::ggplot(
+    table_meta,
+    ggplot2::aes(
+      .data$Rank,
+      .data$Fraction_Target,
+      group = .data$Sample,
+      colour = .data$Passed
+    )
+  ) +
     ggplot2::geom_line() +
     ggplot2::ylim(0, 100) +
     ggplot2::xlab("Abundance Rank") +
     ggplot2::ylab("Percentage Target Source") +
-    ggplot2::facet_wrap(~Sample_Source) +
+    ggplot2::facet_wrap( ~ Sample_Source) +
     ggplot2::theme_minimal()
 }
