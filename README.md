@@ -1,7 +1,6 @@
-# cuperdec
+# cuperdec <img src='man/figures/cuperdec_logo.png' align="right" height="40%" width="40%" />
 <!-- badges: start -->
 [![R build status](https://github.com/jfy133/cuperdec/workflows/R-CMD-check/badge.svg)](https://github.com/jfy133/cuperdec/actions)
-[![CRAN status](https://www.r-pkg.org/badges/version/cuperdec)](https://CRAN.R-project.org/package=cuperdec)
 [![Codecov test coverage](https://codecov.io/gh/jfy133/cuperdec/branch/master/graph/badge.svg)](https://codecov.io/gh/jfy133/cuperdec?branch=master)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4561901.svg)](https://doi.org/10.5281/zenodo.4561901)
 <!-- badges: end -->
@@ -24,6 +23,11 @@ the following
 # install.packages("devtools")
 devtools::install_github("jfy133/cuperdec")
 ```
+
+## Documentation
+
+Please see `vignettes/cuperdec-intro.Rmd`.
+
 ## Acknowledgments
 
 Irina Velsko (@ivelsko), Zandra Fagernäs (@ZandraFagernas), and Lena Semerau 
