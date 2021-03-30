@@ -18,3 +18,8 @@ a list of taxa, and the second column is a list of isolation sources.
 \details{
 Taxon names should match that with the taxa table.
 }
+\examples{
+data(cuperdec_database_ex)
+iso_database <- load_database(cuperdec_database_ex, target = "oral")
+
+}

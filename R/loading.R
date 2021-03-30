@@ -5,6 +5,10 @@
 #'
 #' @param x a TSV file or tidy data frame
 #'
+#' @examples
+#' data(cuperdec_taxatable_ex)
+#' taxa_table <- load_taxa_table(cuperdec_taxatable_ex)
+#'
 #' @export
 load_taxa_table <- function(x) {
   ## Validation
@@ -41,6 +45,10 @@ load_taxa_table <- function(x) {
 #'
 #' @param x a two column TSV file
 #' @param target the string in the 'Isolation Source' (i.e. 2nd) column which is the expected target source of the samples
+#'
+#' @examples
+#' data(cuperdec_database_ex)
+#' iso_database <- load_database(cuperdec_database_ex, target = "oral")
 #'
 #' @export
 load_database <- function(x, target) {
@@ -88,6 +96,10 @@ load_database <- function(x, target) {
 #' @param x a file
 #' @param sample_col a column name specifying which column should be used to specify sample names
 #' @param source_col a column name specifying which group or the source the sample is from
+#'
+#' @examples
+#' data(cuperdec_metadata_ex)
+#' metadata_table <- load_map(cuperdec_metadata_ex, sample_col = "#SampleID", source_col = "Env")
 #'
 #' @export
 load_map <- function(x, sample_col, source_col) {

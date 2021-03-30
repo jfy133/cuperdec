@@ -8,6 +8,15 @@
 #'
 #' @importFrom dplyr row_number
 #'
+#' @examples
+#' data(cuperdec_taxatable_ex)
+#' data(cuperdec_database_ex)
+#'
+#' taxa_table <- load_taxa_table(cuperdec_taxatable_ex)
+#' iso_database <- load_database(cuperdec_database_ex, target = "oral")
+#'
+#' calculate_curve(taxa_table, iso_database)
+#'
 #' @export
 calculate_curve <- function(taxa_table, database) {
   ## Validation
@@ -22,10 +31,12 @@ calculate_curve <- function(taxa_table, database) {
     dplyr::mutate(Rank = dplyr::row_number()) %>%
     dplyr::mutate(Cumulative_Sum = cumsum(.data$Isolation_Source)) %>%
     dplyr::mutate(Fraction_Target = (.data$Cumulative_Sum / .data$Rank) * 100) %>%
-    dplyr::select(.data$Sample,
-                  .data$Taxon,
-                  .data$Rank,
-                  .data$Fraction_Target)
+    dplyr::select(
+      .data$Sample,
+      .data$Taxon,
+      .data$Rank,
+      .data$Fraction_Target
+    )
 }
 
 #' Apply simple filter
@@ -37,6 +48,16 @@ calculate_curve <- function(taxa_table, database) {
 #' @param percent_threshold a database file loaded with `load_database()`
 #'
 #' @importFrom dplyr row_number
+#'
+#' @examples
+#' data(cuperdec_taxatable_ex)
+#' data(cuperdec_database_ex)
+#'
+#' taxa_table <- load_taxa_table(cuperdec_taxatable_ex)
+#' iso_database <- load_database(cuperdec_database_ex, target = "oral")
+#'
+#' curve_results <- calculate_curve(taxa_table, iso_database)
+#' simple_filter(curve_results, percent_threshold = 50)
 #'
 #' @export
 
@@ -56,12 +77,22 @@ simple_filter <- function(curves, percent_threshold) {
 
 #' Calculate hard burnin retain/discard list
 #'
-#' Returns a table of whether each sample passess a given threshold, after
+#' Returns a table of whether each sample passes a given threshold, after
 #' considering a 'burn-in', in the form of a fraction of the abundance ranks
 #'
 #' @param curves a cuperdec curve table calculated with `calculate_curves()`
 #' @param percent_threshold a percentage of the target-source in a sample above which a sample is considered 'retained'
-#' @param rank_burnin a number betwen 0 and 1 indicating the fraction of taxa to ignore before applying the threshold
+#' @param rank_burnin a number between 0 and 1 indicating the fraction of taxa to ignore before applying the threshold
+#'
+#' @examples
+#' data(cuperdec_taxatable_ex)
+#' data(cuperdec_database_ex)
+#'
+#' taxa_table <- load_taxa_table(cuperdec_taxatable_ex)
+#' iso_database <- load_database(cuperdec_database_ex, target = "oral")
+#'
+#' curve_results <- calculate_curve(taxa_table, iso_database)
+#' hard_burnin_filter(curve_results, percent_threshold = 50, rank_burnin =  0.1)
 #'
 #' @export
 
@@ -75,7 +106,7 @@ hard_burnin_filter <-
     }
 
     if ((!is.numeric(rank_burnin) ||
-         rank_burnin >= 1) || rank_burnin == 0) {
+      rank_burnin >= 1) || rank_burnin == 0) {
       stop("[cuperdec] error: rank_burnin must be a decimal number less than 1 and more than 0")
     }
 
@@ -90,7 +121,7 @@ hard_burnin_filter <-
     curves %>%
       dplyr::left_join(n_taxa, by = "Sample") %>%
       dplyr::mutate(Pass = .data$Rank > .data$Start &
-                      .data$Fraction_Target > percent_threshold) %>%
+        .data$Fraction_Target > percent_threshold) %>%
       dplyr::summarise(Passed = any(.data$Pass))
   }
 
@@ -105,6 +136,17 @@ hard_burnin_filter <-
 #' @param percent_threshold a percentage of the target-source in a sample above which a sample is considered 'retained'
 #'
 #' @importFrom stats sd
+#'
+#' @examples
+#' data(cuperdec_taxatable_ex)
+#' data(cuperdec_database_ex)
+#'
+#' taxa_table <- load_taxa_table(cuperdec_taxatable_ex)
+#' iso_database <- load_database(cuperdec_database_ex, target = "oral")
+#'
+#' curve_results <- calculate_curve(taxa_table, iso_database)
+#' adaptive_burnin_filter(curve_results, percent_threshold = 0.1)
+#'
 #' @export
 
 adaptive_burnin_filter <- function(curves, percent_threshold) {
@@ -120,8 +162,9 @@ adaptive_burnin_filter <- function(curves, percent_threshold) {
   ## Find differences in percentage between each stepwise of rank
   table_fluc <- curves %>%
     dplyr::mutate(Fluctuation = dplyr::lag(.data$Fraction_Target,
-                                           1,
-                                           default = 0) - .data$Fraction_Target)
+      1,
+      default = 0
+    ) - .data$Fraction_Target)
 
   ## Calculate per-sample the mean +- SD of
   ## stepwise-rank-percentage-target-differences, with + as upper limit and -
@@ -163,6 +206,6 @@ adaptive_burnin_filter <- function(curves, percent_threshold) {
   curves %>%
     dplyr::left_join(burnin_rank, by = c("Sample")) %>%
     dplyr::mutate(Pass = .data$Rank > .data$Within_Limits + 1 &
-                    .data$Fraction_Target > percent_threshold) %>%
+      .data$Fraction_Target > percent_threshold) %>%
     dplyr::summarise(Passed = any(.data$Pass))
 }

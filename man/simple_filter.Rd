@@ -15,3 +15,14 @@ simple_filter(curves, percent_threshold)
 Performs the initial decay curve based on percentage of 'target' isolation
 source along a rank of most to least abundant taxa for a given sample.
 }
+\examples{
+data(cuperdec_taxatable_ex)
+data(cuperdec_database_ex)
+
+taxa_table <- load_taxa_table(cuperdec_taxatable_ex)
+iso_database <- load_database(cuperdec_database_ex, target = "oral")
+
+curve_results <- calculate_curve(taxa_table, iso_database)
+simple_filter(curve_results, percent_threshold = 50)
+
+}

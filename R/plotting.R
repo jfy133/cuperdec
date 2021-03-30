@@ -10,6 +10,20 @@
 #' @param restrict_x optional restriction viewing of abundance rank to X number
 #' of ranks (useful for closer inspection of curves)
 #'
+#' @examples
+#' data(cuperdec_taxatable_ex)
+#' data(cuperdec_database_ex)
+#' data(cuperdec_metadata_ex)
+#'
+#' taxa_table <- load_taxa_table(cuperdec_taxatable_ex)
+#' iso_database <- load_database(cuperdec_database_ex, target = "oral")
+#' metadata_table <- load_map(cuperdec_metadata_ex, sample_col = "#SampleID", source_col = "Env")
+#'
+#' curves <- calculate_curve(taxa_table, iso_database)
+#' burnin_results <- adaptive_burnin_filter(curves, percent_threshold = 0.1)
+#'
+#' plot_cuperdec(curves, metadata_table, burnin_results)
+#'
 #' @export
 
 plot_cuperdec <-

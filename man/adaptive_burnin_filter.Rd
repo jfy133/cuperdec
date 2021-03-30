@@ -17,3 +17,14 @@ nature of the sample's curve itself (rather than supplying a hard value) by
 finding the point from which the 'fluctuation' of the curve doesn't exceed
 the mean +- SD of the total curve.
 }
+\examples{
+data(cuperdec_taxatable_ex)
+data(cuperdec_database_ex)
+
+taxa_table <- load_taxa_table(cuperdec_taxatable_ex)
+iso_database <- load_database(cuperdec_database_ex, target = "oral")
+
+curve_results <- calculate_curve(taxa_table, iso_database)
+adaptive_burnin_filter(curve_results, percent_threshold = 0.1)
+
+}

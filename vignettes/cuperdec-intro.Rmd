@@ -110,15 +110,9 @@ locations of these in your system.
 
 ```{r}
 
-example_taxatable <- system.file("extdata",
-                                 "example_taxatable.tsv",
-                                 package = "cuperdec")
-example_database <- system.file("extdata",
-                                "example_database.tsv",
-                                package = "cuperdec")
-example_map <- system.file("extdata",
-                           "example_metadata.tsv",
-                           package = "cuperdec")
+data(cuperdec_taxatable_ex)
+data(cuperdec_database_ex)
+data(cuperdec_metadata_ex)
 
 ```
 
@@ -131,7 +125,7 @@ The function `load_taxa_table()` will then convert a OTU table into long format
 and rename columns to names that downstream functions will use.
 
 ```{r}
-taxatable <- load_taxa_table(example_taxatable) %>%
+taxatable <- load_taxa_table(cuperdec_taxatable_ex) %>%
   print()
 
 ## Alternative:
@@ -153,7 +147,7 @@ for every Taxon that is derived from the target source as 'True' and everything
 that isn't as 'False'.
 
 ```{r}
-database <- load_database(example_database, target = "oral") %>%
+database <- load_database(cuperdec_database_ex, target = "oral") %>%
   print()
 ```
 
@@ -168,15 +162,13 @@ have other columns in the metadata file, but only the two indicated will be
 taken downstream.
 
 ```{r}
-metadata_map <- load_map(example_map,
+metadata_map <- load_map(cuperdec_metadata_ex,
                      sample_col = "#SampleID",
                      source_col = "Env") %>%
   print()
 ```
 
 # Calculating a simple curve
-
-TODO: CONTINUE FROM HERE
 
 Now, with all our data loaded we can calculate the cumulative percent curves
 per sample. 
