@@ -28,3 +28,4 @@ Suggests:
     rmarkdown,
     testthat,
 VignetteBuilder: knitr
+Language: en-GB

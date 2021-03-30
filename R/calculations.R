@@ -16,7 +16,6 @@
 #' iso_database <- load_database(cuperdec_database_ex, target = "oral")
 #'
 #' calculate_curve(taxa_table, iso_database)
-#'
 #' @export
 calculate_curve <- function(taxa_table, database) {
   ## Validation
@@ -58,7 +57,6 @@ calculate_curve <- function(taxa_table, database) {
 #'
 #' curve_results <- calculate_curve(taxa_table, iso_database)
 #' simple_filter(curve_results, percent_threshold = 50)
-#'
 #' @export
 
 simple_filter <- function(curves, percent_threshold) {
@@ -92,8 +90,7 @@ simple_filter <- function(curves, percent_threshold) {
 #' iso_database <- load_database(cuperdec_database_ex, target = "oral")
 #'
 #' curve_results <- calculate_curve(taxa_table, iso_database)
-#' hard_burnin_filter(curve_results, percent_threshold = 50, rank_burnin =  0.1)
-#'
+#' hard_burnin_filter(curve_results, percent_threshold = 50, rank_burnin = 0.1)
 #' @export
 
 hard_burnin_filter <-
@@ -146,7 +143,6 @@ hard_burnin_filter <-
 #'
 #' curve_results <- calculate_curve(taxa_table, iso_database)
 #' adaptive_burnin_filter(curve_results, percent_threshold = 0.1)
-#'
 #' @export
 
 adaptive_burnin_filter <- function(curves, percent_threshold) {

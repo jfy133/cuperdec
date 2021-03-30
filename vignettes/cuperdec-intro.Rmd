@@ -19,7 +19,7 @@ These visualisations were originally developed to assist in the identification
 of the abundance and prevalence of microbial taxa in ancient microbiome samples,
 with samples with high abundance and prevalence of the expected original 
 microbiome, when comparing to modern samples from the same microbiome source.
-However, this concept could potentailly be applied in other contexts.
+However, this concept could potentially be applied in other contexts.
 
 The curves consist of an 'abundance rank' (x-axis), and a percentage of
 taxa from the target (i.e.original microbiome) source (y-axis). The curve
@@ -53,7 +53,7 @@ The generation of these curves require at a minimum:
 
   * A TSV formatted isolation source table with two columns:
     * A list of taxa that matches the names in your OTU table (e.g. _Tannerella forsythia_, _Helicobacter pylori_, _Mycobacterium kansasii_)
-    * The corresponding isolation sources of each taxon, i.e. where the particular reference sequence of the taxon was extracted (e.g. oral cavity, gut, soil etc.)
+    * The corresponding isolation sources of each taxon, i.e. where the particular reference sequence of the taxon was extracted (e.g. oral cavity, gut, soil)
     
 | Taxon   | Sample_A |
 |:-------:|:--------:|
@@ -72,9 +72,9 @@ Additionally, you can supply:
     
 | Samples   | Other    | Group    | Other    |
 |:---------:|:--------:|:--------:|---------:|
-| Sample_A  | F        | Group_A  | 23,000   |
-| Sample_B  | T        | Group_A  | 4,000    |
-| Sample_C  | T        | Group_B  | 15,000   |
+| Sample_A  | False    | Group_A  | 23,000   |
+| Sample_B  | True     | Group_A  | 4,000    |
+| Sample_C  | True     | Group_B  | 15,000   |
 | ...       | ...      | ...      | ...      |
     
 In this example, we will use a dataset from Fellows Yates _et al._ 202X. This
@@ -82,7 +82,7 @@ study looked at microbiome DNA isolated from dental calculus of ancient
 skeletons. We wanted to try to identify samples which appeared to have still 
 displayed evidence of the remains original microbes that makes up a tooth 
 biofilm. This allowed us to discard any samples that were so degraded no
-signature of the original microbiome remained, and that  couldnegatively 
+signature of the original microbiome remained, and that could negatively 
 influence downstream analyses. 
 
 This assessment can be done by by comparing the curves of the ancient samples 
@@ -136,7 +136,7 @@ Next we need to use`load_database()` to load the file which describes the
 original isolation source of each OTU. Again, this function can take either
 a path to a file on your system, or a data frame already loaded into R.
 
-This function takes two paramters, in addition to the the isolation source 
+This function takes two parameters, in addition to the the isolation source 
 table itself, and you also need to supply the name of the target isolation
 source you are looking for within each sample. 
 
@@ -156,7 +156,7 @@ groups of our samples, with each different known-isolation comparative sample.
 Therefore, we will load an optional file carrying various metadata about each 
 sample
 
-For this we use `load_map()`, supplying the metadata TSV, the name of the 
+For this we use `cuperdec_metadata_ex()`, supplying the metadata TSV, the name of the 
 column with sample names, and the name of the column with the groups. You can
 have other columns in the metadata file, but only the two indicated will be
 taken downstream.
@@ -177,7 +177,7 @@ The way this works is to order (per sample) each taxon by it's abundance. Then, 
 the fraction of taxa at each rank, that have come from your 'target' source (
 including all ranks up until the current one). 
 
-A schematic can be seen on Figure R8 in [github repository](https://github.com/jfy133/Anthropoid_Calculus_Microbiome_Evolution/tree/master/#r81-cumulative-percent-decay-plots) of 
+A schematic can be seen on Figure R8 in [GitHub repository](https://github.com/jfy133/Anthropoid_Calculus_Microbiome_Evolution/tree/master/#r81-cumulative-percent-decay-plots) of 
 Fellows Yates _et al._ (202X).
 
 To do these of the taxa table loaded above, we use the `calculate_curve()` 
@@ -278,7 +278,7 @@ point along the abundance rank.
 filter_result <- simple_filter(curves, percent_threshold = 50) %>% print()
 ```
 
-We can then supply this information as an additional paramter for plotting.
+We can then supply this information as an additional parameter for plotting.
 
 ```{r}
 plot_cuperdec(curves, metadata_map, filter_result)
@@ -295,7 +295,7 @@ has much 'oral' taxa at all. It may just be spurious hits, or an over-weighting
 due to the small denominator of the abundance rank in the early ranks.
 
 Therefore, we could maybe apply a simple 'burn in' i.e. only consider whether
-a given curve goes aobve 50% after X amount of ranks (given here as a fraction
+a given curve goes above 50% after X amount of ranks (given here as a fraction
 of 1.0). For example, lets ignore the first 10% ranks of each sample before
 checking if the curve goes above 50% of the target source.
 
