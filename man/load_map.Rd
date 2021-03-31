@@ -9,9 +9,11 @@ load_map(x, sample_col, source_col)
 \arguments{
 \item{x}{a file}
 
-\item{sample_col}{a column name specifying which column should be used to specify sample names}
+\item{sample_col}{a column name specifying which column should be used to
+specify sample names}
 
-\item{source_col}{a column name specifying which group or the source the sample is from}
+\item{source_col}{a column name specifying which group or the source the
+sample is from}
 }
 \description{
 This loads a metadata table. This needs to include at minimum two columns.
@@ -19,10 +21,14 @@ Note that the 'source' column should indicate
 }
 \details{
 1. Sample name - a unique identifier for each sample
-2. Sample source - a grouping ID indicating what 'source' the sample is from. This is used for plotting to separate comparative 'sources' to your own samples.
+
+2. Sample source - a grouping ID indicating what 'source' the sample is from.
+This is used for plotting to separate comparative 'sources' to your own
+samples.
 }
 \examples{
 data(cuperdec_metadata_ex)
-metadata_table <- load_map(cuperdec_metadata_ex, sample_col = "#SampleID", source_col = "Env")
+metadata_table <- load_map(cuperdec_metadata_ex, sample_col = "#SampleID",
+source_col = "Env")
 
 }

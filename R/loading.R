@@ -20,7 +20,8 @@ load_taxa_table <- function(x) {
 
   if (ncol(input_table) < 2) {
     stop(
-      "[cuperdec] error: your taxa table requires a minimum of 2 columns only: Taxon, Sample_1"
+      "[cuperdec] error: your taxa table requires a minimum of 2 columns only:
+      Taxon, Sample_1"
     )
   }
 
@@ -44,7 +45,8 @@ load_taxa_table <- function(x) {
 #' Taxon names should match that with the taxa table.
 #'
 #' @param x a two column TSV file
-#' @param target the string in the 'Isolation Source' (i.e. 2nd) column which is the expected target source of the samples
+#' @param target the string in the 'Isolation Source' (i.e. 2nd) column which
+#'   is the expected target source of the samples
 #'
 #' @examples
 #' data(cuperdec_database_ex)
@@ -61,7 +63,8 @@ load_database <- function(x, target) {
 
   if (ncol(input_table) != 2) {
     stop(
-      "[cuperdec] error: your isolation source database requires two columns only: Sample, Isolation Source."
+      "[cuperdec] error: your isolation source database requires two columns
+      only: Sample, Isolation Source."
     )
   }
 
@@ -78,7 +81,8 @@ load_database <- function(x, target) {
 
   if (!any(result$Isolation_Source)) {
     stop(
-      "[cuperdec] error: your supplied target source was not found in your isolation source column!"
+      "[cuperdec] error: your supplied target source was not found in your
+      isolation source column!"
     )
   }
 
@@ -91,15 +95,21 @@ load_database <- function(x, target) {
 #' Note that the 'source' column should indicate
 #'
 #' 1. Sample name - a unique identifier for each sample
-#' 2. Sample source - a grouping ID indicating what 'source' the sample is from. This is used for plotting to separate comparative 'sources' to your own samples.
+#'
+#' 2. Sample source - a grouping ID indicating what 'source' the sample is from.
+#' This is used for plotting to separate comparative 'sources' to your own
+#' samples.
 #'
 #' @param x a file
-#' @param sample_col a column name specifying which column should be used to specify sample names
-#' @param source_col a column name specifying which group or the source the sample is from
+#' @param sample_col a column name specifying which column should be used to
+#'   specify sample names
+#' @param source_col a column name specifying which group or the source the
+#'   sample is from
 #'
 #' @examples
 #' data(cuperdec_metadata_ex)
-#' metadata_table <- load_map(cuperdec_metadata_ex, sample_col = "#SampleID", source_col = "Env")
+#' metadata_table <- load_map(cuperdec_metadata_ex, sample_col = "#SampleID",
+#' source_col = "Env")
 #'
 #' @export
 load_map <- function(x, sample_col, source_col) {
@@ -112,16 +122,19 @@ load_map <- function(x, sample_col, source_col) {
 
   if (ncol(input_table) < 2) {
     stop(
-      "[cuperdec] error: your metadata database a minimum of two columns: Sample, Sample Source."
+      "[cuperdec] error: your metadata database a minimum of two columns:
+      Sample, Sample Source."
     )
   }
 
   if (!sample_col %in% colnames(input_table)) {
-    stop("[cuperdec] error: your requested sample name column is not found in the dataframe!")
+    stop("[cuperdec] error: your requested sample name column is not found in
+         the dataframe!")
   }
 
   if (!source_col %in% colnames(input_table)) {
-    stop("[cuperdec] error: your requested sample source column is not found in the dataframe!")
+    stop("[cuperdec] error: your requested sample source column is not found in
+         the dataframe!")
   }
 
   ## Processing

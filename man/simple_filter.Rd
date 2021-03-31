@@ -24,5 +24,4 @@ iso_database <- load_database(cuperdec_database_ex, target = "oral")
 
 curve_results <- calculate_curve(taxa_table, iso_database)
 simple_filter(curve_results, percent_threshold = 50)
-
 }

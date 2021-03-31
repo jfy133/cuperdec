@@ -50,8 +50,10 @@ testthat::test_that("Hard burnin filter works as expected", {
 
 testthat::test_that("Simple filter inputs are valid", {
   testthat::expect_error(hard_burnin_filter(curve, "50", 0.1))
-  testthat::expect_error(hard_burnin_filter(curve, 50, 2)) ## rank_burnin between 0-1
-  testthat::expect_error(hard_burnin_filter(curve, 50, "0.1")) ## rank_burnin between 0-1
+  ## rank_burnin between 0-1
+  testthat::expect_error(hard_burnin_filter(curve, 50, 2))
+  ## rank_burnin between 0-1
+  testthat::expect_error(hard_burnin_filter(curve, 50, "0.1"))
 })
 
 ## adaptive_burnin_filter

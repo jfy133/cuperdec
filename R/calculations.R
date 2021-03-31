@@ -29,7 +29,8 @@ calculate_curve <- function(taxa_table, database) {
     dplyr::group_by(.data$Sample) %>%
     dplyr::mutate(Rank = dplyr::row_number()) %>%
     dplyr::mutate(Cumulative_Sum = cumsum(.data$Isolation_Source)) %>%
-    dplyr::mutate(Fraction_Target = (.data$Cumulative_Sum / .data$Rank) * 100) %>%
+    dplyr::mutate(Fraction_Target = (.data$Cumulative_Sum / .data$Rank) *
+                    100) %>%
     dplyr::select(
       .data$Sample,
       .data$Taxon,
@@ -79,8 +80,10 @@ simple_filter <- function(curves, percent_threshold) {
 #' considering a 'burn-in', in the form of a fraction of the abundance ranks
 #'
 #' @param curves a cuperdec curve table calculated with `calculate_curves()`
-#' @param percent_threshold a percentage of the target-source in a sample above which a sample is considered 'retained'
-#' @param rank_burnin a number between 0 and 1 indicating the fraction of taxa to ignore before applying the threshold
+#' @param percent_threshold a percentage of the target-source in a sample above
+#'   which a sample is considered 'retained'
+#' @param rank_burnin a number between 0 and 1 indicating the fraction of taxa
+#'   to ignore before applying the threshold
 #'
 #' @examples
 #' data(cuperdec_taxatable_ex)
@@ -104,7 +107,8 @@ hard_burnin_filter <-
 
     if ((!is.numeric(rank_burnin) ||
       rank_burnin >= 1) || rank_burnin == 0) {
-      stop("[cuperdec] error: rank_burnin must be a decimal number less than 1 and more than 0")
+      stop("[cuperdec] error: rank_burnin must be a decimal number less than 1
+           and more than 0")
     }
 
     ## Calculation
@@ -113,8 +117,8 @@ hard_burnin_filter <-
       dplyr::summarise(N_Taxa = dplyr::n()) %>%
       dplyr::mutate(Start = .data$N_Taxa * rank_burnin)
 
-    ## Note: This is ugly as shouldn't need the duplicated values for joining but
-    ## will keep for now until think of more elegent solution
+    ## Note: This is ugly as shouldn't need the duplicated values for joining
+    ## but will keep for now until think of more elegent solution
     curves %>%
       dplyr::left_join(n_taxa, by = "Sample") %>%
       dplyr::mutate(Pass = .data$Rank > .data$Start &
@@ -130,7 +134,8 @@ hard_burnin_filter <-
 #' the mean +- SD of the total curve.
 #'
 #' @param curves a cuperdec curve table calculated with `calculate_curves()`
-#' @param percent_threshold a percentage of the target-source in a sample above which a sample is considered 'retained'
+#' @param percent_threshold a percentage of the target-source in a sample above
+#'   which a sample is considered 'retained'
 #'
 #' @importFrom stats sd
 #'
@@ -175,8 +180,10 @@ adaptive_burnin_filter <- function(curves, percent_threshold) {
       max(.data$Fluctuation)
     ) %>%
     dplyr::mutate(
-      Upper_Limit = .data$`mean(.data$Fluctuation)` + .data$`sd(.data$Fluctuation)`,
-      Lower_Limit = .data$`mean(.data$Fluctuation)` - .data$`sd(.data$Fluctuation)`
+      Upper_Limit = .data$`mean(.data$Fluctuation)` +
+        .data$`sd(.data$Fluctuation)`,
+      Lower_Limit = .data$`mean(.data$Fluctuation)` -
+        .data$`sd(.data$Fluctuation)`
     ) %>%
     dplyr::select(.data$Sample, .data$Upper_Limit, .data$Lower_Limit)
 

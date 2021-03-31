@@ -23,5 +23,4 @@ taxa_table <- load_taxa_table(cuperdec_taxatable_ex)
 iso_database <- load_database(cuperdec_database_ex, target = "oral")
 
 calculate_curve(taxa_table, iso_database)
-
 }

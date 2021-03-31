@@ -127,9 +127,13 @@ and rename columns to names that downstream functions will use.
 ```{r}
 taxatable <- load_taxa_table(cuperdec_taxatable_ex) %>%
   print()
+```
 
-## Alternative:
-## taxatable <- load_taxa_table("/<path>/<to>/<file>.tsv")
+Alternatively you can provide a path directly to a TSV table (not run here),
+rather than an already loaded object.
+
+```{r, eval = F}
+taxatable <- load_taxa_table("/<path>/<to>/<file>.tsv")
 ```
 
 Next we need to use`load_database()` to load the file which describes the
@@ -300,7 +304,9 @@ of 1.0). For example, lets ignore the first 10% ranks of each sample before
 checking if the curve goes above 50% of the target source.
 
 ```{r}
-burnin_result <- hard_burnin_filter(curves, percent_threshold = 50, rank_burnin = 0.1)
+burnin_result <- hard_burnin_filter(curves,
+                                    percent_threshold = 50,
+                                    rank_burnin = 0.1)
 plot_cuperdec(curves, metadata_map, burnin_result)
 ```
 

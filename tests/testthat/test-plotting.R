@@ -1,14 +1,17 @@
 library(cuperdec)
 
 raw_table <- system.file("extdata",
-                         "example_taxatable.tsv",
-                         package = "cuperdec")
+  "example_taxatable.tsv",
+  package = "cuperdec"
+)
 raw_database <- system.file("extdata",
-                            "example_database.tsv",
-                            package = "cuperdec")
+  "example_database.tsv",
+  package = "cuperdec"
+)
 raw_metadata <- system.file("extdata",
-                            "example_metadata.tsv",
-                            package = "cuperdec")
+  "example_metadata.tsv",
+  package = "cuperdec"
+)
 
 ## Test plotting!
 taxatable <- cuperdec::load_taxa_table(raw_table)
@@ -28,7 +31,10 @@ curve_metadata_plot <-
 curve_filtered_plot <-
   cuperdec::plot_cuperdec(curve, burnin_result = curve_filtered)
 curve_filtered_metadata_plot <-
-  cuperdec::plot_cuperdec(curve, metadata = metadata, burnin_result = curve_filtered)
+  cuperdec::plot_cuperdec(curve,
+    metadata = metadata,
+    burnin_result = curve_filtered
+  )
 
 ## plot tests
 testthat::test_that("General plotting works", {

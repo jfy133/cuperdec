@@ -8,7 +8,7 @@
 #' @param metadata optional output from `load_map()`
 #' @param burnin_result optional output from `apply_*_burnin()` functions
 #' @param restrict_x optional restriction viewing of abundance rank to X number
-#' of ranks (useful for closer inspection of curves)
+#'   of ranks (useful for closer inspection of curves)
 #'
 #' @examples
 #' data(cuperdec_taxatable_ex)
@@ -17,7 +17,9 @@
 #'
 #' taxa_table <- load_taxa_table(cuperdec_taxatable_ex)
 #' iso_database <- load_database(cuperdec_database_ex, target = "oral")
-#' metadata_table <- load_map(cuperdec_metadata_ex, sample_col = "#SampleID", source_col = "Env")
+#' metadata_table <- load_map(cuperdec_metadata_ex,
+#'   sample_col = "#SampleID",
+#'   source_col = "Env")
 #'
 #' curves <- calculate_curve(taxa_table, iso_database)
 #' burnin_results <- adaptive_burnin_filter(curves, percent_threshold = 0.1)
@@ -143,7 +145,7 @@ plot_grouped <- function(curves, metadata) {
     ggplot2::ylim(0, 100) +
     ggplot2::xlab("Abundance Rank") +
     ggplot2::ylab("Percentage Target Source") +
-    ggplot2::facet_wrap( ~ Sample_Source) +
+    ggplot2::facet_wrap(~ Sample_Source) +
     ggplot2::theme_minimal()
 }
 
@@ -182,6 +184,6 @@ plot_grouped_burnin <- function(curves, metadata, burnin_result) {
     ggplot2::ylim(0, 100) +
     ggplot2::xlab("Abundance Rank") +
     ggplot2::ylab("Percentage Target Source") +
-    ggplot2::facet_wrap( ~ Sample_Source) +
+    ggplot2::facet_wrap(~ Sample_Source) +
     ggplot2::theme_minimal()
 }
