@@ -12,7 +12,7 @@ Description: This library calculates and visualises cumulative percent 'decay'
     These can be used to estimate the level of expected 'endogenous' taxa at 
     different abundance levels retrieved from metagenomic samples, when 
     comparing to samples of known sampling site or source.
-License: MIT + file LICENSE
+License: MIT
 Encoding: UTF-8
 LazyData: true
 Imports: dplyr, readr, magrittr, tidyr, ggplot2, rlang
