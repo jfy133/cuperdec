@@ -7,7 +7,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4561901.svg)](https://doi.org/10.5281/zenodo.4561901)
 <!-- badges: end -->
 
-R library to generate 'Cumulative Percent Decay' curves, with optional 
+R package to generate 'Cumulative Percent Decay' curves, with optional 
 filtering functions, for microbial taxonomic profiles.
 
 ![Example of Cumulative Percent Decay curves](inst/extdata/cuperdec_example_plot.svg)

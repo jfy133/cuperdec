@@ -181,7 +181,7 @@ The way this works is to order (per sample) each taxon by it's abundance. Then, 
 the fraction of taxa at each rank, that have come from your 'target' source (
 including all ranks up until the current one). 
 
-A schematic can be seen on Figure R8 in [GitHub repository](https://github.com/jfy133/Anthropoid_Calculus_Microbiome_Evolution/tree/master/#r81-cumulative-percent-decay-plots) of 
+A schematic can be seen on Figure R8 in [GitHub repository](https://github.com/jfy133/Hominid_Calculus_Microbiome_Evolution/tree/master/#r81-cumulative-percent-decay-plots) of 
 Fellows Yates _et al._ (202X).
 
 To do these of the taxa table loaded above, we use the `calculate_curve()` 
