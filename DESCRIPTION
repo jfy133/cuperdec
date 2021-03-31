@@ -8,7 +8,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "jfy133@gmail.com",
            comment = c(ORCID = "0000-0001-5585-6277"))
-Description: This package calculates and visualises cumulative percent
+Description: Calculates and visualises cumulative percent
     'decay' curves, which are typically calculated from metagenomic
     taxonomic profiles.  These can be used to estimate the level of
     expected 'endogenous' taxa at different abundance levels retrieved
