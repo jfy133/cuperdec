@@ -7,9 +7,14 @@
 calculate_curve(taxa_table, database)
 }
 \arguments{
-\item{taxa_table}{a OTU table loaded with `load_taxa_table()`}
+\item{taxa_table}{An OTU table loaded with `load_taxa_table()`.}
 
-\item{database}{a database file loaded with `load_database()`}
+\item{database}{A database file loaded with `load_database()`.}
+}
+\value{
+An object in the form of a tibble with taxa of each given sample 
+  ordered by rank and the proportion of taxa up to that rank deriving 
+  from your target source.
 }
 \description{
 Performs the initial decay curve based on percentage of 'target' isolation

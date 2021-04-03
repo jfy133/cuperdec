@@ -7,10 +7,15 @@
 load_database(x, target)
 }
 \arguments{
-\item{x}{a two column TSV file}
+\item{x}{Path to a (minimum) two column TSV file or tidy dataframe (e.g. 
+tibble), one column with taxon names and other indicating if from
+target isolation source.}
 
 \item{target}{the string in the 'Isolation Source' (i.e. 2nd) column which
 is the expected target source of the samples}
+}
+\value{
+A tibble, formatted for use in downstream cuperdec functions.
 }
 \description{
 This loads a taxon / isolation source database file i.e. first column is

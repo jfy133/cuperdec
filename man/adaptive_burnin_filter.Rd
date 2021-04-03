@@ -7,10 +7,14 @@
 adaptive_burnin_filter(curves, percent_threshold)
 }
 \arguments{
-\item{curves}{a cuperdec curve table calculated with `calculate_curves()`}
+\item{curves}{A cuperdec curve table calculated with `calculate_curves()`.}
 
-\item{percent_threshold}{a percentage of the target-source in a sample above
-which a sample is considered 'retained'}
+\item{percent_threshold}{A percentage of the target-source in a sample above
+which a sample is considered 'retained'.}
+}
+\value{
+A tibble with each row showing each sample and whether it
+  passed the specified filter.
 }
 \description{
 This function automates a selection of a per-sample 'burn in' based on the

@@ -7,7 +7,11 @@
 load_taxa_table(x)
 }
 \arguments{
-\item{x}{a TSV file or tidy data frame}
+\item{x}{Path to a TSV file or tidy dataframe (e.g. tibble) consisting of an
+OTU table of samples as columns, except first column with taxon names.}
+}
+\value{
+A tibble, formatted for use in downstream cuperdec functions.
 }
 \description{
 This loads a typical taxa table (Samples: columns; Taxa: rows) in TSV format

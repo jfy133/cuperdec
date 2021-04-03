@@ -3,7 +3,10 @@
 #' This loads a typical taxa table (Samples: columns; Taxa: rows) in TSV format
 #' and standardises some columns, storing the table in the form of a tibble.
 #'
-#' @param x a TSV file or tidy data frame
+#' @param x Path to a TSV file or tidy dataframe (e.g. tibble) consisting of an
+#'   OTU table of samples as columns, except first column with taxon names.
+#'   
+#' @return A tibble, formatted for use in downstream cuperdec functions.
 #'
 #' @examples
 #' data(cuperdec_taxatable_ex)
@@ -44,10 +47,14 @@ load_taxa_table <- function(x) {
 #'
 #' Taxon names should match that with the taxa table.
 #'
-#' @param x a two column TSV file
+#' @param x Path to a (minimum) two column TSV file or tidy dataframe (e.g. 
+#'  tibble), one column with taxon names and other indicating if from
+#'  target isolation source.
 #' @param target the string in the 'Isolation Source' (i.e. 2nd) column which
 #'   is the expected target source of the samples
-#'
+#'   
+#' @return A tibble, formatted for use in downstream cuperdec functions.
+#' 
 #' @examples
 #' data(cuperdec_database_ex)
 #' iso_database <- load_database(cuperdec_database_ex, target = "oral")
@@ -100,11 +107,14 @@ load_database <- function(x, target) {
 #' This is used for plotting to separate comparative 'sources' to your own
 #' samples.
 #'
-#' @param x a file
-#' @param sample_col a column name specifying which column should be used to
-#'   specify sample names
-#' @param source_col a column name specifying which group or the source the
-#'   sample is from
+#' @param x Path to a TSV file or tidy dataframe (e.g. tibble) with a column
+#'   containing sample names and other grouping metadata columns.
+#' @param sample_col A column name specifying which column should be used to
+#'   specify sample names.
+#' @param source_col A column name specifying which group or the source the
+#'   sample is from.
+#'   
+#' @return A tibble, formatted for use in downstream cuperdec functions.
 #'
 #' @examples
 #' data(cuperdec_metadata_ex)

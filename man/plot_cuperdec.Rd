@@ -7,14 +7,17 @@
 plot_cuperdec(curves, metadata, burnin_result, restrict_x = 0)
 }
 \arguments{
-\item{curves}{output tibble from `calculate_curves()`}
+\item{curves}{Output tibble from `calculate_curves()`.}
 
-\item{metadata}{optional output from `load_map()`}
+\item{metadata}{Optional output from `load_map()`.}
 
-\item{burnin_result}{optional output from `apply_*_burnin()` functions}
+\item{burnin_result}{Optional output from `apply_*_burnin()` functions.}
 
-\item{restrict_x}{optional restriction viewing of abundance rank to X number
-of ranks (useful for closer inspection of curves)}
+\item{restrict_x}{Optional restriction viewing of abundance rank to X number
+of ranks (useful for closer inspection of curves).}
+}
+\value{
+A ggplot2 image object.
 }
 \description{
 Generate visual representation of curves, with optional separate plotting

@@ -7,13 +7,17 @@
 load_map(x, sample_col, source_col)
 }
 \arguments{
-\item{x}{a file}
+\item{x}{Path to a TSV file or tidy dataframe (e.g. tibble) with a column
+containing sample names and other grouping metadata columns.}
 
-\item{sample_col}{a column name specifying which column should be used to
-specify sample names}
+\item{sample_col}{A column name specifying which column should be used to
+specify sample names.}
 
-\item{source_col}{a column name specifying which group or the source the
-sample is from}
+\item{source_col}{A column name specifying which group or the source the
+sample is from.}
+}
+\value{
+A tibble, formatted for use in downstream cuperdec functions.
 }
 \description{
 This loads a metadata table. This needs to include at minimum two columns.

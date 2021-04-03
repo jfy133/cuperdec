@@ -1,4 +1,14 @@
 ## Resubmission
+From first resubmission comments:
+
+-  The Description field should not start with the package name,
+     'This package' or similar.
+
+- Do you not check the package yourself? I know that you got coinfused when 
+  I wrote it is not a library. But I assumed you would see that you should 
+  omit the redundancy at all, sorry for causing confusion.
+    - **Response** Sorry, indeed I misread the comment. Removed this entirely.
+
 This is a resubmission. From the comments of Uwe Ligges, I have:
     
 - Please change http --> https, add trailing slashes, or follow moved

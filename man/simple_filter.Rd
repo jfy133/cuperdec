@@ -7,9 +7,13 @@
 simple_filter(curves, percent_threshold)
 }
 \arguments{
-\item{curves}{a cuperdec curve table calculated with `calculate_curves()`}
+\item{curves}{A cuperdec curve table calculated with `calculate_curves()`.}
 
-\item{percent_threshold}{a database file loaded with `load_database()`}
+\item{percent_threshold}{A database file loaded with `load_database()`.}
+}
+\value{
+A tibble with each row showing each sample and whether it
+  passed the specified filter.
 }
 \description{
 Performs the initial decay curve based on percentage of 'target' isolation
