@@ -1,4 +1,4 @@
-# cuperdec 1.0.0
+# cuperdec 1.0.0 _2021-04-03_
 
 * First release of cuperdec package
   * Adds functions to load and format data

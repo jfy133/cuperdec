@@ -12,8 +12,8 @@ calculate_curve(taxa_table, database)
 \item{database}{A database file loaded with `load_database()`.}
 }
 \value{
-An object in the form of a tibble with taxa of each given sample 
-  ordered by rank and the proportion of taxa up to that rank deriving 
+An object in the form of a tibble with taxa of each given sample
+  ordered by rank and the proportion of taxa up to that rank deriving
   from your target source.
 }
 \description{

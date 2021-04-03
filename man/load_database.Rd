@@ -7,7 +7,7 @@
 load_database(x, target)
 }
 \arguments{
-\item{x}{Path to a (minimum) two column TSV file or tidy dataframe (e.g. 
+\item{x}{Path to a (minimum) two column TSV file or tidy dataframe (e.g.
 tibble), one column with taxon names and other indicating if from
 target isolation source.}
 
@@ -27,5 +27,4 @@ Taxon names should match that with the taxa table.
 \examples{
 data(cuperdec_database_ex)
 iso_database <- load_database(cuperdec_database_ex, target = "oral")
-
 }

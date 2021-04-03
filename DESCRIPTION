@@ -8,15 +8,16 @@ Authors@R:
            role = c("aut", "cre"),
            email = "jfy133@gmail.com",
            comment = c(ORCID = "0000-0001-5585-6277"))
-Description: Calculates and visualises cumulative percent
-    'decay' curves, which are typically calculated from metagenomic
-    taxonomic profiles.  These can be used to estimate the level of
-    expected 'endogenous' taxa at different abundance levels retrieved
-    from metagenomic samples, when comparing to samples of known sampling
-    site or source.
+Description: Calculates and visualises cumulative percent 'decay' curves,
+    which are typically calculated from metagenomic taxonomic profiles.
+    These can be used to estimate the level of expected 'endogenous' taxa
+    at different abundance levels retrieved from metagenomic samples, when
+    comparing to samples of known sampling site or source.
 License: MIT + file LICENSE
 URL: https://github.com/jfy133/cuperdec
 BugReports: https://github.com/jfy133/cuperdec/issues
+Depends: 
+    R (>= 3.5.0)
 Imports: 
     dplyr,
     ggplot2,

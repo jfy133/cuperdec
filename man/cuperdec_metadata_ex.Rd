@@ -22,6 +22,5 @@ a grouping column corresponding to sample species.
 
 data(cuperdec_metadata_ex)
 load_map(cuperdec_metadata_ex, sample_col = "#SampleID", source_col = "Env")
-
 }
 \keyword{datasets}

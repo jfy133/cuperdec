@@ -32,7 +32,8 @@ samples.
 }
 \examples{
 data(cuperdec_metadata_ex)
-metadata_table <- load_map(cuperdec_metadata_ex, sample_col = "#SampleID",
-source_col = "Env")
-
+metadata_table <- load_map(cuperdec_metadata_ex,
+  sample_col = "#SampleID",
+  source_col = "Env"
+)
 }

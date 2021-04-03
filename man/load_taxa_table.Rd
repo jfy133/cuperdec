@@ -20,5 +20,4 @@ and standardises some columns, storing the table in the form of a tibble.
 \examples{
 data(cuperdec_taxatable_ex)
 taxa_table <- load_taxa_table(cuperdec_taxatable_ex)
-
 }
