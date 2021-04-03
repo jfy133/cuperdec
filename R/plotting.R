@@ -9,7 +9,7 @@
 #' @param burnin_result Optional output from `apply_*_burnin()` functions.
 #' @param restrict_x Optional restriction viewing of abundance rank to X number
 #'   of ranks (useful for closer inspection of curves).
-#'   
+#'
 #' @return A ggplot2 image object.
 #'
 #' @examples
@@ -21,13 +21,13 @@
 #' iso_database <- load_database(cuperdec_database_ex, target = "oral")
 #' metadata_table <- load_map(cuperdec_metadata_ex,
 #'   sample_col = "#SampleID",
-#'   source_col = "Env")
+#'   source_col = "Env"
+#' )
 #'
 #' curves <- calculate_curve(taxa_table, iso_database)
 #' burnin_results <- adaptive_burnin_filter(curves, percent_threshold = 0.1)
 #'
 #' plot_cuperdec(curves, metadata_table, burnin_results)
-#'
 #' @export
 
 plot_cuperdec <-
@@ -71,16 +71,19 @@ plot_cuperdec <-
 #' Informs `plot_cuperdec()`, plots curves with no additional formatting.
 #'
 #' @param curves Output tibble from `calculate_curves()`.
-#' 
+#'
 #' @return A ggplot2 image object.
 #'
 #' @noRd
 
 plot_simple <- function(curves) {
-  ggplot2::ggplot(curves,
-                  ggplot2::aes(.data$Rank,
-                               .data$Fraction_Target,
-                               group = .data$Sample)) +
+  ggplot2::ggplot(
+    curves,
+    ggplot2::aes(.data$Rank,
+      .data$Fraction_Target,
+      group = .data$Sample
+    )
+  ) +
     ggplot2::geom_line() +
     ggplot2::ylim(0, 100) +
     ggplot2::xlab("Abundance Rank") +
@@ -95,7 +98,7 @@ plot_simple <- function(curves) {
 #'
 #' @param curves Output tibble from `calculate_curves()`.
 #' @param burnin_result Optional output from `apply_*_burnin()` functions.
-#' 
+#'
 #' @return A ggplot2 image object.
 #'
 #' @noRd
@@ -106,8 +109,9 @@ plot_burnin <- function(curves, burnin_result) {
 
   ## Calculation
   table_meta <- dplyr::left_join(curves,
-                                 burnin_result,
-                                 by = c("Sample"))
+    burnin_result,
+    by = c("Sample")
+  )
 
   ggplot2::ggplot(
     table_meta,
@@ -132,7 +136,7 @@ plot_burnin <- function(curves, burnin_result) {
 #'
 #' @param curves Output tibble from `calculate_curves()`.
 #' @param metadata Optional output from `load_map()`.
-#' 
+#'
 #' @return A ggplot2 image object.
 #'
 #' @noRd
@@ -145,15 +149,18 @@ plot_grouped <- function(curves, metadata) {
   validate_samplesource(table_meta)
 
   ## Plotting
-  ggplot2::ggplot(table_meta,
-                  ggplot2::aes(.data$Rank,
-                               .data$Fraction_Target,
-                               group = .data$Sample)) +
+  ggplot2::ggplot(
+    table_meta,
+    ggplot2::aes(.data$Rank,
+      .data$Fraction_Target,
+      group = .data$Sample
+    )
+  ) +
     ggplot2::geom_line() +
     ggplot2::ylim(0, 100) +
     ggplot2::xlab("Abundance Rank") +
     ggplot2::ylab("Percentage Target Source") +
-    ggplot2::facet_wrap(~ Sample_Source) +
+    ggplot2::facet_wrap(~Sample_Source) +
     ggplot2::theme_minimal()
 }
 
@@ -166,15 +173,16 @@ plot_grouped <- function(curves, metadata) {
 #' @param curves Output tibble from `calculate_curves()`.
 #' @param metadata Optional output from `load_map()`.
 #' @param burnin_result Optional output from `apply_*_burnin()` functions.
-#' 
+#'
 #' @return A ggplot2 image object.
 #'
 #' @noRd
 
 plot_grouped_burnin <- function(curves, metadata, burnin_result) {
   table_meta <- dplyr::left_join(curves,
-                                 metadata,
-                                 by = c("Sample")) %>%
+    metadata,
+    by = c("Sample")
+  ) %>%
     dplyr::left_join(burnin_result, by = c("Sample"))
 
   ## Validation
@@ -194,6 +202,6 @@ plot_grouped_burnin <- function(curves, metadata, burnin_result) {
     ggplot2::ylim(0, 100) +
     ggplot2::xlab("Abundance Rank") +
     ggplot2::ylab("Percentage Target Source") +
-    ggplot2::facet_wrap(~ Sample_Source) +
+    ggplot2::facet_wrap(~Sample_Source) +
     ggplot2::theme_minimal()
 }

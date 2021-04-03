@@ -1,14 +1,17 @@
 library(cuperdec)
 
 raw_table <- system.file("extdata",
-                         "example_taxatable.tsv",
-                         package = "cuperdec")
+  "example_taxatable.tsv",
+  package = "cuperdec"
+)
 raw_database <- system.file("extdata",
-                            "example_database.tsv",
-                            package = "cuperdec")
+  "example_database.tsv",
+  package = "cuperdec"
+)
 raw_metadata <- system.file("extdata",
-                            "example_metadata.tsv",
-                            package = "cuperdec")
+  "example_metadata.tsv",
+  package = "cuperdec"
+)
 
 taxatable <- cuperdec::load_taxa_table(raw_table)
 database <- cuperdec::load_database(raw_database, "oral")

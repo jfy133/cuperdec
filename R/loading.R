@@ -5,13 +5,12 @@
 #'
 #' @param x Path to a TSV file or tidy dataframe (e.g. tibble) consisting of an
 #'   OTU table of samples as columns, except first column with taxon names.
-#'   
+#'
 #' @return A tibble, formatted for use in downstream cuperdec functions.
 #'
 #' @examples
 #' data(cuperdec_taxatable_ex)
 #' taxa_table <- load_taxa_table(cuperdec_taxatable_ex)
-#'
 #' @export
 load_taxa_table <- function(x) {
   ## Validation
@@ -47,18 +46,17 @@ load_taxa_table <- function(x) {
 #'
 #' Taxon names should match that with the taxa table.
 #'
-#' @param x Path to a (minimum) two column TSV file or tidy dataframe (e.g. 
+#' @param x Path to a (minimum) two column TSV file or tidy dataframe (e.g.
 #'  tibble), one column with taxon names and other indicating if from
 #'  target isolation source.
 #' @param target the string in the 'Isolation Source' (i.e. 2nd) column which
 #'   is the expected target source of the samples
-#'   
+#'
 #' @return A tibble, formatted for use in downstream cuperdec functions.
-#' 
+#'
 #' @examples
 #' data(cuperdec_database_ex)
 #' iso_database <- load_database(cuperdec_database_ex, target = "oral")
-#'
 #' @export
 load_database <- function(x, target) {
   ## Validation
@@ -113,14 +111,15 @@ load_database <- function(x, target) {
 #'   specify sample names.
 #' @param source_col A column name specifying which group or the source the
 #'   sample is from.
-#'   
+#'
 #' @return A tibble, formatted for use in downstream cuperdec functions.
 #'
 #' @examples
 #' data(cuperdec_metadata_ex)
-#' metadata_table <- load_map(cuperdec_metadata_ex, sample_col = "#SampleID",
-#' source_col = "Env")
-#'
+#' metadata_table <- load_map(cuperdec_metadata_ex,
+#'   sample_col = "#SampleID",
+#'   source_col = "Env"
+#' )
 #' @export
 load_map <- function(x, sample_col, source_col) {
   ## Validation

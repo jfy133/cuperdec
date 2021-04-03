@@ -5,10 +5,10 @@
 #'
 #' @param taxa_table An OTU table loaded with `load_taxa_table()`.
 #' @param database A database file loaded with `load_database()`.
-#' 
-#' @return An object in the form of a tibble with taxa of each given sample 
-#'   ordered by rank and the proportion of taxa up to that rank deriving 
-#'   from your target source.  
+#'
+#' @return An object in the form of a tibble with taxa of each given sample
+#'   ordered by rank and the proportion of taxa up to that rank deriving
+#'   from your target source.
 #'
 #' @importFrom dplyr row_number
 #'
@@ -34,7 +34,7 @@ calculate_curve <- function(taxa_table, database) {
     dplyr::mutate(Rank = dplyr::row_number()) %>%
     dplyr::mutate(Cumulative_Sum = cumsum(.data$Isolation_Source)) %>%
     dplyr::mutate(Fraction_Target = (.data$Cumulative_Sum / .data$Rank) *
-                    100) %>%
+      100) %>%
     dplyr::select(
       .data$Sample,
       .data$Taxon,
@@ -50,9 +50,9 @@ calculate_curve <- function(taxa_table, database) {
 #'
 #' @param curves A cuperdec curve table calculated with `calculate_curves()`.
 #' @param percent_threshold A database file loaded with `load_database()`.
-#' 
+#'
 #' @return A tibble with each row showing each sample and whether it
-#'   passed the specified filter.  
+#'   passed the specified filter.
 #'
 #' @importFrom dplyr row_number
 #'
@@ -93,7 +93,7 @@ simple_filter <- function(curves, percent_threshold) {
 #'   to ignore before applying the threshold.
 #'
 #' @return A tibble with each row showing each sample and whether it
-#'   passed the specified filter.  
+#'   passed the specified filter.
 #'
 #' @examples
 #' data(cuperdec_taxatable_ex)
@@ -146,9 +146,9 @@ hard_burnin_filter <-
 #' @param curves A cuperdec curve table calculated with `calculate_curves()`.
 #' @param percent_threshold A percentage of the target-source in a sample above
 #'   which a sample is considered 'retained'.
-#'   
+#'
 #' @return A tibble with each row showing each sample and whether it
-#'   passed the specified filter.  
+#'   passed the specified filter.
 #'
 #' @importFrom stats sd
 #'

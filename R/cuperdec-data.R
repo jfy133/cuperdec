@@ -65,5 +65,4 @@
 #'
 #' data(cuperdec_metadata_ex)
 #' load_map(cuperdec_metadata_ex, sample_col = "#SampleID", source_col = "Env")
-#'
 "cuperdec_metadata_ex"
