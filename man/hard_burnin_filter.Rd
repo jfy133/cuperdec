@@ -7,7 +7,8 @@
 hard_burnin_filter(curves, percent_threshold, rank_burnin)
 }
 \arguments{
-\item{curves}{A cuperdec curve table calculated with `calculate_curves()`.}
+\item{curves}{A cuperdec curve table calculated with 
+\code{\link{calculate_curve}}.}
 
 \item{percent_threshold}{A percentage of the target-source in a sample above
 which a sample is considered 'retained'.}

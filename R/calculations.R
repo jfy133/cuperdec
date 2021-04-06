@@ -1,10 +1,10 @@
-#' Calculate curve
+#' Calculate cumulative decay percent curve
 #'
 #' Performs the initial decay curve based on percentage of 'target' isolation
 #' source along a rank of most to least abundant taxa for a given sample.
 #'
-#' @param taxa_table An OTU table loaded with \code{load_taxa_table()}.
-#' @param database A database file loaded with \code{load_database()}.
+#' @param taxa_table An OTU table loaded with \code{\link{load_taxa_table}}.
+#' @param database A database file loaded with \code{\link{load_database}}.
 #'
 #' @return An object in the form of a tibble with taxa of each given sample
 #'   ordered by rank and the proportion of taxa up to that rank deriving
@@ -43,13 +43,15 @@ calculate_curve <- function(taxa_table, database) {
     )
 }
 
-#' Apply simple filter
+#' Apply simple percentage filter
 #'
 #' Performs the initial decay curve based on percentage of 'target' isolation
 #' source along a rank of most to least abundant taxa for a given sample.
 #'
-#' @param curves A cuperdec curve table calculated with \code{calculate_curves()}.
-#' @param percent_threshold A database file loaded with \code{load_database()}.
+#' @param curves A cuperdec curve table calculated with
+#'   \code{\link{calculate_curve}}.
+#' @param percent_threshold A database file loaded with
+#'   \code{\link{load_database}}.
 #'
 #' @return A tibble with each row showing each sample and whether it
 #'   passed the specified filter.
@@ -81,12 +83,13 @@ simple_filter <- function(curves, percent_threshold) {
     dplyr::summarise(Passed = any(.data$Pass))
 }
 
-#' Calculate hard burnin retain/discard list
+#' Calculate hard burn-in retain/discard list
 #'
 #' Returns a table of whether each sample passes a given threshold, after
 #' considering a 'burn-in', in the form of a fraction of the abundance ranks.
 #'
-#' @param curves A cuperdec curve table calculated with \code{calculate_curves()}.
+#' @param curves A cuperdec curve table calculated with
+#'   \code{\link{calculate_curve}}.
 #' @param percent_threshold A percentage of the target-source in a sample above
 #'   which a sample is considered 'retained'.
 #' @param rank_burnin A number between 0 and 1 indicating the fraction of taxa
@@ -136,14 +139,15 @@ hard_burnin_filter <-
       dplyr::summarise(Passed = any(.data$Pass))
   }
 
-#' Calculate adaptive burnin retain/discard list
+#' Calculate adaptive burn-in retain/discard list
 #'
-#' This function automates a selection of a per-sample 'burn in' based on the
+#' Automates a selection of a per-sample 'burn in' based on the
 #' nature of the sample's curve itself (rather than supplying a hard value) by
 #' finding the point from which the 'fluctuation' of the curve doesn't exceed
 #' the mean +- SD of the total curve.
 #'
-#' @param curves A cuperdec curve table calculated with \code{calculate_curves()}.
+#' @param curves A cuperdec curve table calculated with
+#'   \code{\link{calculate_curve}}.
 #' @param percent_threshold A percentage of the target-source in a sample above
 #'   which a sample is considered 'retained'.
 #'

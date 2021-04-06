@@ -7,11 +7,12 @@
 plot_cuperdec(curves, metadata, burnin_result, restrict_x = 0)
 }
 \arguments{
-\item{curves}{Output tibble from `calculate_curves()`.}
+\item{curves}{Output tibble from \code{\link{calculate_curve}}.}
 
-\item{metadata}{Optional output from `load_map()`.}
+\item{metadata}{Optional output from \code{\link{load_map}}.}
 
-\item{burnin_result}{Optional output from `apply_*_burnin()` functions.}
+\item{burnin_result}{Optional output from \code{apply_*_burnin}. 
+functions.}
 
 \item{restrict_x}{Optional restriction viewing of abundance rank to X number
 of ranks (useful for closer inspection of curves).}

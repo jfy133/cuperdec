@@ -7,9 +7,9 @@
 calculate_curve(taxa_table, database)
 }
 \arguments{
-\item{taxa_table}{An OTU table loaded with `load_taxa_table()`.}
+\item{taxa_table}{An OTU table loaded with \code{\link{load_taxa_table}}.}
 
-\item{database}{A database file loaded with `load_database()`.}
+\item{database}{A database file loaded with \code{\link{load_database}}.}
 }
 \value{
 An object in the form of a tibble with taxa of each given sample

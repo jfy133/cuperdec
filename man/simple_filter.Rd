@@ -7,9 +7,11 @@
 simple_filter(curves, percent_threshold)
 }
 \arguments{
-\item{curves}{A cuperdec curve table calculated with `calculate_curves()`.}
+\item{curves}{A cuperdec curve table calculated with 
+\code{\link{calculate_curve}}.}
 
-\item{percent_threshold}{A database file loaded with `load_database()`.}
+\item{percent_threshold}{A database file loaded with 
+\code{\link{load_database}}.}
 }
 \value{
 A tibble with each row showing each sample and whether it

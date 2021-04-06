@@ -33,6 +33,16 @@ samples, versus those that do not have the same signal. This can then be used
 to inform downstream analyses in terms of discarding potentially unreliable 
 samples.
 
+# Setup
+
+You will require the library [`dplyr`](https://dplyr.tidyverse.org/) for this 
+tutorial! Please install this if you have not already.
+
+```{r}
+library("dplyr")
+```
+
+
 # Input
 
 ## Required
@@ -252,7 +262,7 @@ group_order <- c("subPlaque",
 )
 
 metadata_map <- metadata_map %>%
-  mutate(Sample_Source = factor(Sample_Source, levels = group_order))
+  dplyr::mutate(Sample_Source = factor(Sample_Source, levels = group_order))
 
 # Re-plot
 plot_cuperdec(curves, metadata = metadata_map)

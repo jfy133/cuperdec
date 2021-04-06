@@ -1,6 +1,6 @@
 #' Load OTU table
 #'
-#' This loads a typical taxa table (Samples: columns; Taxa: rows) in TSV format
+#' Loads a typical taxa table (Samples: columns; Taxa: rows) in TSV format
 #' and standardises some columns, storing the table in the form of a tibble.
 #'
 #' @param x Path to a TSV file or tidy dataframe (e.g. tibble) consisting of an
@@ -41,8 +41,9 @@ load_taxa_table <- function(x) {
 
 #' Load database
 #'
-#' This loads a taxon / isolation source database file i.e. first column is
-#' a list of taxa, and the second column is a list of isolation sources.
+#' Loads a taxon/isolation source database file, i.e. first column is
+#' a list of taxa, and the second column is a list of isolation sources, and
+#' formats for downstream analysis.
 #'
 #' Taxon names should match that with the taxa table.
 #'
@@ -96,14 +97,16 @@ load_database <- function(x, target) {
 
 #' Load metadata table
 #'
-#' This loads a metadata table. This needs to include at minimum two columns.
-#' Note that the 'source' column should indicate
+#' Loads a metadata table and reformats it for downstream analysis. This needs
+#' to include at minimum two columns: sample name, and sample source.
 #'
-#' 1. Sample name - a unique identifier for each sample
-#'
-#' 2. Sample source - a grouping ID indicating what 'source' the sample is from.
-#' This is used for plotting to separate comparative 'sources' to your own
-#' samples.
+#' The two columns required need to include the following information:
+#' \itemize{
+#'   \item{Sample name - a unique identifier for each sample}
+#'   \item{Sample source - a grouping ID indicating what 'source' the sample is
+#'   from This is used for plotting to separate comparative 'sources' to your
+#'   own samples.}
+#' }
 #'
 #' @param x Path to a TSV file or tidy dataframe (e.g. tibble) with a column
 #'   containing sample names and other grouping metadata columns.

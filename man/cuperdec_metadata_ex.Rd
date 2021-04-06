@@ -8,7 +8,7 @@
 An TSV table loaded as a readr "tibble"
 }
 \source{
-https://doi.org/10.5281/zenodo.3740492
+\url{https://doi.org/10.5281/zenodo.3740492}
 }
 \usage{
 data(cuperdec_metadata_ex)
