@@ -1,4 +1,14 @@
 ## Resubmission
+From second resubmission comments (from Julia Haider):
+
+
+- Please add \value to .Rd files regarding exported methods and explain
+  the functions results in the documentation. Please write about the
+  structure of the output (class) and also what the output means.
+  - **Response** I have added `\value` tags to all user-facing functions. 
+  I removed one accidentally exported function.
+
+
 From first resubmission comments:
 
 -  The Description field should not start with the package name,

@@ -5,10 +5,10 @@
 \alias{cuperdec_taxatable_ex}
 \title{Example taxon table input for cuperdec}
 \format{
-An TSV table loaded as a readr "tibble"
+An TSV table loaded as a \code{tibble}.
 }
 \source{
-\url{https://doi.org/10.5281/zenodo.3740492}
+\doi{10.5281/zenodo.3740492}
 }
 \usage{
 data(cuperdec_taxatable_ex)

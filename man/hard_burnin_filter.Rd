@@ -2,12 +2,12 @@
 % Please edit documentation in R/calculations.R
 \name{hard_burnin_filter}
 \alias{hard_burnin_filter}
-\title{Calculate hard burnin retain/discard list}
+\title{Calculate hard burn-in retain/discard list}
 \usage{
 hard_burnin_filter(curves, percent_threshold, rank_burnin)
 }
 \arguments{
-\item{curves}{A cuperdec curve table calculated with 
+\item{curves}{A cuperdec curve table calculated with
 \code{\link{calculate_curve}}.}
 
 \item{percent_threshold}{A percentage of the target-source in a sample above

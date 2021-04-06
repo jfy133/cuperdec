@@ -2,12 +2,12 @@
 % Please edit documentation in R/calculations.R
 \name{adaptive_burnin_filter}
 \alias{adaptive_burnin_filter}
-\title{Calculate adaptive burnin retain/discard list}
+\title{Calculate adaptive burn-in retain/discard list}
 \usage{
 adaptive_burnin_filter(curves, percent_threshold)
 }
 \arguments{
-\item{curves}{A cuperdec curve table calculated with 
+\item{curves}{A cuperdec curve table calculated with
 \code{\link{calculate_curve}}.}
 
 \item{percent_threshold}{A percentage of the target-source in a sample above
@@ -18,7 +18,7 @@ A tibble with each row showing each sample and whether it
   passed the specified filter.
 }
 \description{
-This function automates a selection of a per-sample 'burn in' based on the
+Automates a selection of a per-sample 'burn in' based on the
 nature of the sample's curve itself (rather than supplying a hard value) by
 finding the point from which the 'fluctuation' of the curve doesn't exceed
 the mean +- SD of the total curve.

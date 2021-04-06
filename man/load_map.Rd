@@ -20,13 +20,15 @@ sample is from.}
 A tibble, formatted for use in downstream cuperdec functions.
 }
 \description{
-This loads a metadata table. This needs to include at minimum two columns:
+Loads a metadata table and reformats it for downstream analysis. This needs
+to include at minimum two columns: sample name, and sample source.
 }
 \details{
+The two columns required need to include the following information:
 \itemize{
   \item{Sample name - a unique identifier for each sample}
-  \item{Sample source - a grouping ID indicating what 'source' the sample is 
-  from This is used for plotting to separate comparative 'sources' to your 
+  \item{Sample source - a grouping ID indicating what 'source' the sample is
+  from This is used for plotting to separate comparative 'sources' to your
   own samples.}
 }
 }

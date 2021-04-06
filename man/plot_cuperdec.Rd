@@ -11,7 +11,7 @@ plot_cuperdec(curves, metadata, burnin_result, restrict_x = 0)
 
 \item{metadata}{Optional output from \code{\link{load_map}}.}
 
-\item{burnin_result}{Optional output from \code{apply_*_burnin}. 
+\item{burnin_result}{Optional output from \code{apply_*_burnin}.
 functions.}
 
 \item{restrict_x}{Optional restriction viewing of abundance rank to X number
@@ -21,7 +21,7 @@ of ranks (useful for closer inspection of curves).}
 A ggplot2 image object.
 }
 \description{
-Generate visual representation of curves, with optional separate plotting
+Generates visual representation of curves, with optional separate plotting
 of different groups, and also indication of individuals passing different
 on types filters.
 }

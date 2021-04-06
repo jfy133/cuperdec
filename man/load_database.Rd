@@ -18,8 +18,9 @@ is the expected target source of the samples}
 A tibble, formatted for use in downstream cuperdec functions.
 }
 \description{
-This loads a taxon / isolation source database file i.e. first column is
-a list of taxa, and the second column is a list of isolation sources.
+Loads a taxon/isolation source database file, i.e. first column is
+a list of taxa, and the second column is a list of isolation sources, and
+formats for downstream analysis.
 }
 \details{
 Taxon names should match that with the taxa table.

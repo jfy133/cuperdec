@@ -14,7 +14,7 @@
 #'
 #' @keywords datasets
 #'
-#' @source \url{https://doi.org/10.5281/zenodo.3740492}
+#' @source \doi{10.5281/zenodo.3740492}
 #'
 #' @examples
 #'
@@ -37,7 +37,7 @@
 #'
 #' @keywords datasets
 #'
-#' @source \url{https://doi.org/10.5281/zenodo.3740492}
+#' @source \doi{10.5281/zenodo.3740492}
 #'
 #' @examples
 #'
@@ -59,7 +59,7 @@
 #'
 #' @keywords datasets
 #'
-#' @source \url{https://doi.org/10.5281/zenodo.3740492}
+#' @source \doi{10.5281/zenodo.3740492}
 #'
 #' @examples
 #'

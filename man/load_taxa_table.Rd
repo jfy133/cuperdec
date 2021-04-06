@@ -14,7 +14,7 @@ OTU table of samples as columns, except first column with taxon names.}
 A tibble, formatted for use in downstream cuperdec functions.
 }
 \description{
-This loads a typical taxa table (Samples: columns; Taxa: rows) in TSV format
+Loads a typical taxa table (Samples: columns; Taxa: rows) in TSV format
 and standardises some columns, storing the table in the form of a tibble.
 }
 \examples{

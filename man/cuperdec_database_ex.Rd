@@ -5,10 +5,10 @@
 \alias{cuperdec_database_ex}
 \title{Example isolation source database input for cuperdec}
 \format{
-An TSV table loaded as a readr "tibble"
+An TSV table loaded as a \code{tibble}.
 }
 \source{
-\url{https://doi.org/10.5281/zenodo.3740492}
+\doi{10.5281/zenodo.3740492}
 }
 \usage{
 data(cuperdec_database_ex)
@@ -17,7 +17,7 @@ data(cuperdec_database_ex)
 Example isolation source database used for input to
 cuperdec based. Species names are from a NCBI Nt database
 and isolation sources gather from the Human Oral Microbiome
-database, NCBI Genbank, and manual curation.
+database, NCBI GenBank, and manual curation.
 }
 \examples{
 

@@ -2,15 +2,15 @@
 % Please edit documentation in R/calculations.R
 \name{simple_filter}
 \alias{simple_filter}
-\title{Apply simple filter}
+\title{Apply simple percentage filter}
 \usage{
 simple_filter(curves, percent_threshold)
 }
 \arguments{
-\item{curves}{A cuperdec curve table calculated with 
+\item{curves}{A cuperdec curve table calculated with
 \code{\link{calculate_curve}}.}
 
-\item{percent_threshold}{A database file loaded with 
+\item{percent_threshold}{A database file loaded with
 \code{\link{load_database}}.}
 }
 \value{

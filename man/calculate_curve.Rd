@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculations.R
 \name{calculate_curve}
 \alias{calculate_curve}
-\title{Calculate curve}
+\title{Calculate cumulative decay percent curve}
 \usage{
 calculate_curve(taxa_table, database)
 }

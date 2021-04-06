@@ -35,5 +35,4 @@ Encoding: UTF-8
 Language: en-GB
 LazyData: true
 NeedsCompilation: no
-Packaged: 2020-05-18 13:34:27 UTC; fellows@shh.mpg.de
 RoxygenNote: 7.1.1
