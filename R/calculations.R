@@ -3,8 +3,8 @@
 #' Performs the initial decay curve based on percentage of 'target' isolation
 #' source along a rank of most to least abundant taxa for a given sample.
 #'
-#' @param taxa_table An OTU table loaded with `load_taxa_table()`.
-#' @param database A database file loaded with `load_database()`.
+#' @param taxa_table An OTU table loaded with \code{load_taxa_table()}.
+#' @param database A database file loaded with \code{load_database()}.
 #'
 #' @return An object in the form of a tibble with taxa of each given sample
 #'   ordered by rank and the proportion of taxa up to that rank deriving
@@ -48,8 +48,8 @@ calculate_curve <- function(taxa_table, database) {
 #' Performs the initial decay curve based on percentage of 'target' isolation
 #' source along a rank of most to least abundant taxa for a given sample.
 #'
-#' @param curves A cuperdec curve table calculated with `calculate_curves()`.
-#' @param percent_threshold A database file loaded with `load_database()`.
+#' @param curves A cuperdec curve table calculated with \code{calculate_curves()}.
+#' @param percent_threshold A database file loaded with \code{load_database()}.
 #'
 #' @return A tibble with each row showing each sample and whether it
 #'   passed the specified filter.
@@ -86,7 +86,7 @@ simple_filter <- function(curves, percent_threshold) {
 #' Returns a table of whether each sample passes a given threshold, after
 #' considering a 'burn-in', in the form of a fraction of the abundance ranks.
 #'
-#' @param curves A cuperdec curve table calculated with `calculate_curves()`.
+#' @param curves A cuperdec curve table calculated with \code{calculate_curves()}.
 #' @param percent_threshold A percentage of the target-source in a sample above
 #'   which a sample is considered 'retained'.
 #' @param rank_burnin A number between 0 and 1 indicating the fraction of taxa
@@ -143,7 +143,7 @@ hard_burnin_filter <-
 #' finding the point from which the 'fluctuation' of the curve doesn't exceed
 #' the mean +- SD of the total curve.
 #'
-#' @param curves A cuperdec curve table calculated with `calculate_curves()`.
+#' @param curves A cuperdec curve table calculated with \code{calculate_curves()}.
 #' @param percent_threshold A percentage of the target-source in a sample above
 #'   which a sample is considered 'retained'.
 #'

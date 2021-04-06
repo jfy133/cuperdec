@@ -4,9 +4,9 @@
 #' of different groups, and also indication of individuals passing different
 #' on types filters.
 #'
-#' @param curves Output tibble from `calculate_curves()`.
-#' @param metadata Optional output from `load_map()`.
-#' @param burnin_result Optional output from `apply_*_burnin()` functions.
+#' @param curves Output tibble from \code{calculate_curves()}.
+#' @param metadata Optional output from \code{load_map()}.
+#' @param burnin_result Optional output from \code{apply_*_burnin()} functions.
 #' @param restrict_x Optional restriction viewing of abundance rank to X number
 #'   of ranks (useful for closer inspection of curves).
 #'
@@ -68,9 +68,9 @@ plot_cuperdec <-
 
 #' Plot curves with no metadata or burnin
 #'
-#' Informs `plot_cuperdec()`, plots curves with no additional formatting.
+#' Informs \code{plot_cuperdec()}, plots curves with no additional formatting.
 #'
-#' @param curves Output tibble from `calculate_curves()`.
+#' @param curves Output tibble from \code{calculate_curves()}.
 #'
 #' @return A ggplot2 image object.
 #'
@@ -93,11 +93,11 @@ plot_simple <- function(curves) {
 
 #' Plot curves with burn-in filtering results
 #'
-#' Informs `plot_cuperdec()`, plots curves but with curve colouring based
+#' Informs \code{plot_cuperdec()}, plots curves but with curve colouring based
 #' on whether a sample passed a given filter.
 #'
-#' @param curves Output tibble from `calculate_curves()`.
-#' @param burnin_result Optional output from `apply_*_burnin()` functions.
+#' @param curves Output tibble from \code{calculate_curves()}.
+#' @param burnin_result Optional output from \code{apply_*_burnin()} functions.
 #'
 #' @return A ggplot2 image object.
 #'
@@ -131,11 +131,11 @@ plot_burnin <- function(curves, burnin_result) {
 
 #' Plot curves with group facets
 #'
-#' Informs `plot_cuperdec()`, separates curves based on a grouping category,
+#' Informs \code{plot_cuperdec()}, separates curves based on a grouping category,
 #' which places each group into a new facet.
 #'
-#' @param curves Output tibble from `calculate_curves()`.
-#' @param metadata Optional output from `load_map()`.
+#' @param curves Output tibble from \code{calculate_curves()}.
+#' @param metadata Optional output from \code{load_map()}.
 #'
 #' @return A ggplot2 image object.
 #'
@@ -166,13 +166,13 @@ plot_grouped <- function(curves, metadata) {
 
 #' Plot curves with group facets and burn-in filtering results
 #'
-#' Informs `plot_cuperdec()`, plots curves but with curve colouring based
+#' Informs \code{plot_cuperdec()}, plots curves but with curve colouring based
 #' on whether a sample passed a given filter and separates curves of each
 #' group into a different facet.
 #'
-#' @param curves Output tibble from `calculate_curves()`.
-#' @param metadata Optional output from `load_map()`.
-#' @param burnin_result Optional output from `apply_*_burnin()` functions.
+#' @param curves Output tibble from \code{calculate_curves()}.
+#' @param metadata Optional output from \code{load_map()}.
+#' @param burnin_result Optional output from \code{apply_*_burnin()} functions.
 #'
 #' @return A ggplot2 image object.
 #'
