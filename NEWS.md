@@ -1,3 +1,6 @@
+# cuperdec 1.1.0 _[unreleased]_
+
+
 # cuperdec 1.0.0 _2021-04-06_
 
 * First release of cuperdec package
