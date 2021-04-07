@@ -19,7 +19,13 @@ levels of preservation that should be discarded for downstream analysis.
 
 ## Installation
 
-This package is still in development. To install for testing, you can run
+`cuperdec` is on CRAN. You can install the package with the usual command
+
+```r
+install.packages("cuperdec")
+```
+
+To install the development version for testing, you can run
 the following
 
 ```r
