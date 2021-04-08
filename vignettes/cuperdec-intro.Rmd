@@ -223,7 +223,7 @@ Due to the large number of samples in the example data, we cannot see much.
 To improve this, we can use a second plotting function to separate each group
 of samples into their own window.
 
-```{r}
+```{r fig.width=7, fig.height=5}
 plot_cuperdec(curves, metadata_map)
 ```
 
@@ -233,7 +233,7 @@ Note that if you wanted to re-order the order panels, you can simply convert
 the 'Sample_Source' column of the `metadata_map` to factors, with your 
 preferred ordering. For example:
 
-```{r}
+```{r fig.width=7, fig.height=5}
 ## Set ordering of groups
 group_order <- c("subPlaque",
                "supPlaque",
@@ -294,7 +294,7 @@ filter_result <- simple_filter(curves, percent_threshold = 50) %>% print()
 
 We can then supply this information as an additional parameter for plotting.
 
-```{r}
+```{r fig.width=7, fig.height=5}
 plot_cuperdec(curves, metadata_map, filter_result)
 ```
 
@@ -313,7 +313,7 @@ a given curve goes above 50% after X amount of ranks (given here as a fraction
 of 1.0). For example, lets ignore the first 10% ranks of each sample before
 checking if the curve goes above 50% of the target source.
 
-```{r}
+```{r fig.width=7, fig.height=5}
 burnin_result <- hard_burnin_filter(curves,
                                     percent_threshold = 50,
                                     rank_burnin = 0.1)
@@ -327,7 +327,7 @@ sufficient preservation that we still want to keep this.
 We can also supply an extra parameter to `plot_cuperdec` Lets look a bit more 
 closely at the curves to by restricting the X-axis Ranks to 250 ranks.
 
-```{r}
+```{r fig.width=7, fig.height=5}
 plot_cuperdec(curves, metadata_map, burnin_result, restrict_x = 250)
 ```
 
@@ -349,7 +349,7 @@ the percentage target source threshold (50%), from the point at which the
 difference of the percentage target source of one rank to the next, does not 
 exceed the standard-deviation of all differences.
 
-```{r}
+```{r fig.width=7, fig.height=5}
 burnin_result <- adaptive_burnin_filter(curves, percent_threshold = 50)
 plot_cuperdec(curves, metadata_map, burnin_result, restrict_x = 250)
 ```
