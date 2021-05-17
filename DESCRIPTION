@@ -28,7 +28,8 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    markdown
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
