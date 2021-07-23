@@ -38,7 +38,7 @@ samples.
 You will require the library [`dplyr`](https://dplyr.tidyverse.org/) for this 
 tutorial! Please install this if you have not already.
 
-```{r}
+```{r message = FALSE}
 library("dplyr")
 ```
 
@@ -275,18 +275,19 @@ like the Plaque samples, compared to e.g. sediment and skin.
 
 ## Simple
 
-While visualisation of these difference curves already start help us
-to distinguish well-preserved samples from those that maybe have little oral
-taxa preserved, we can also try and use the observations from the plot above
-to set up cut-off filters.
+These visualisation of these difference curves already start help us
+to distinguish well-preserved samples from those that maybe have few oral
+taxa left remaining. However, we can also try and use the observations from the 
+plot above to set up cut-off filters that allows us to make consistent 
+'keep'/'discard' decisions.
 
 For example, other than a single extraction control, all non-plaque comparative
-samples do not exceed the 'Percentage Target Source' threshold of ~50%.
+samples do not exceed a minimum 'Percentage Target Source' threshold of ~50%.
 
 Using observations like this `cuperdec` offers a range of different functions 
 that perform various cut-off assessments between samples. For example, we can
-use `simple_filter()` to indicate any sample that does not exceed 50% at any
-point along the abundance rank.
+use `simple_filter()` to indicate any sample that exceeds a minimum
+percent source threshold of 50% at any point along the abundance rank.
 
 ```{r}
 filter_result <- simple_filter(curves, percent_threshold = 50) %>% print()
@@ -296,6 +297,22 @@ We can then supply this information as an additional parameter for plotting.
 
 ```{r fig.width=7, fig.height=5}
 plot_cuperdec(curves, metadata_map, filter_result)
+```
+
+As a demonstration, the defined cut-off means that any curve that enters the 
+yellow box at any abundance rank (i.e. above the minimum 50% threshold at any 
+point across the x-axis) is considered as being `Passed`.
+
+```{r echo=FALSE, fig.width=7, fig.height=5}
+plot_cuperdec(curves, metadata_map, filter_result) + 
+  ggplot2::geom_hline(yintercept = 50, color = "grey") +
+  ggplot2::geom_rect(xmin = 0,
+                     xmax = max(curves$Rank),
+                     ymin = 50,
+                     ymax = 100,
+                     alpha = 0,
+                     colour = "#D39200"
+                       )
 ```
 
 ## Hard Burnin
@@ -308,10 +325,14 @@ of ranks, actually looks like for the most part that it doesn't look like it
 has much 'oral' taxa at all. It may just be spurious hits, or an over-weighting
 due to the small denominator of the abundance rank in the early ranks.
 
-Therefore, we could maybe apply a simple 'burn in' i.e. only consider whether
-a given curve goes above 50% after X amount of ranks (given here as a fraction
-of 1.0). For example, lets ignore the first 10% ranks of each sample before
-checking if the curve goes above 50% of the target source.
+Therefore, we can additionally apply a simple 'burn in', after which we start
+considering whether the curve exceeds the minimum percent threshold. In other 
+words, only consider whether a given curve goes above 50% after X amount of 
+ranks (given here as 1.0% of the ranks), for each curve. Alternatively phrase, 
+ignore the first 10% ranks of each sample before checking if the curve goes 
+above 50% of the target source.
+
+To do this on the full dataset
 
 ```{r fig.width=7, fig.height=5}
 burnin_result <- hard_burnin_filter(curves,
@@ -320,9 +341,10 @@ burnin_result <- hard_burnin_filter(curves,
 plot_cuperdec(curves, metadata_map, burnin_result)
 ```
 
-This is better, but now we have a Neanderthal and a few preagricultural
-humans that clearly exceed 50% for quite a few ranks, so might have lower but 
-sufficient preservation that we still want to keep this. 
+This is better, but now we have a Neanderthal and a few pre-agricultural
+humans that clearly exceed 50% for quite a few ranks, so while preservation 
+might still be lower than others, they may still have _sufficient_ preservation 
+that we still want to keep these samples for downstream. 
 
 We can also supply an extra parameter to `plot_cuperdec` Lets look a bit more 
 closely at the curves to by restricting the X-axis Ranks to 250 ranks.
@@ -331,12 +353,64 @@ closely at the curves to by restricting the X-axis Ranks to 250 ranks.
 plot_cuperdec(curves, metadata_map, burnin_result, restrict_x = 250)
 ```
 
-We definitely see that there are some Neanderthals that are excluded with
-a hard burnin of 10% despite having otherwise a curve pretty similar to other 
-Neanderthals. This could be because they have long tails, meaning that the 
-'peak' exceeding cut-off of 50% occurs within the first 10% of ranks, however
-this is still the region of the abundance rank that would give the strongest
-oral taxon signal in very old samples.
+We can again graphically demonstrate the burn-in thresholds of a 
+_single sample_ for this filter, following the yellow-box example in the 
+previous section, see the following image.
+
+```{r echo=FALSE, fig.width=7, fig.height=5}
+
+sub_curves <- curves %>% filter(Sample %in% c("ABM008.A0101", "FUM001.A0101"))
+
+sub_curve_burnin <- sub_curves %>%
+  group_by(Sample) %>%
+  summarise(max = max(Rank)) %>%
+  mutate(perc = round(max * 0.1)) %>%
+  select(Sample, perc) %>%
+  tibble::deframe(.)
+
+
+plot_cuperdec(sub_curves, burnin_result = burnin_result, restrict_x = 250) +
+  ggplot2::geom_hline(yintercept = 50, color = "grey") +
+  ggplot2::geom_rect(
+    xmin = sub_curve_burnin["ABM008.A0101"],
+    xmax = 250,
+    ymin = 50,
+    ymax = 100,
+    alpha = 0,
+    colour = "#D39200"
+  ) +
+  ggplot2::geom_rect(
+    xmin = sub_curve_burnin["FUM001.A0101"],
+    xmax = 250,
+    ymin = 50,
+    ymax = 100,
+    alpha = 0,
+    colour = "#FF61C3"
+  )
+```
+
+> Note this image is purely for demonstrative purposes, and is not from a 
+> `cuperdec` function.
+
+You can see the boxes specifying where the curves of each sample must enter has 
+now shifted away from 0  along the x-axis.
+
+One sample's curve enters its box (yellow, i.e. after the 10% 
+burning threshold of`r sub_curve_burnin["ABM008.A0101"]` the abundance rank) and 
+therefore is considered passing the minimum percent target source threshold. In 
+contrast, the 'failed' sample has a curve falls just outside of its box (pink), 
+has a 10% burn-in threshold of rank `r sub_curve_burnin["FUM001.A0101"]`.
+
+The different boxes emphasise that the burn-in is calculated on a _per-sample_
+basis, and that there is not a single abundance rank cut-off for all samples.
+
+However, when looking back at the whole dataset definitely see that there are 
+some Neanderthals that are excluded with a hard burn-in of 10% despite having 
+otherwise a curve pretty similar to other Neanderthals. This could be because 
+they have unusually long tails of very low abundant taxa, meaning that the 
+'peak' exceeding the minimum threshold of 50% occurs within the first 10% of 
+ranks, however this is still the region of theabundance rank that would give 
+the strongest oral taxon signal in very old  samples.
 
 ## Adaptive Burnin
 
@@ -345,13 +419,45 @@ based on the amount of 'fluctuation' that occurs early in the curves (based
 on the small fraction denominators).
 
 This is performed here by only starting to considering whether a curve exceeds 
-the percentage target source threshold (50%), from the point at which the 
+minimum percentage target source threshold (50%), from the point at which the 
 difference of the percentage target source of one rank to the next, does not 
 exceed the standard-deviation of all differences.
 
 ```{r fig.width=7, fig.height=5}
 burnin_result <- adaptive_burnin_filter(curves, percent_threshold = 50)
 plot_cuperdec(curves, metadata_map, burnin_result, restrict_x = 250)
+```
+
+```{r echo=FALSE, fig.width=7, fig.height=5}
+
+sub_curves <- curves %>% filter(Sample %in% c("EBO008.A0101", "DJA006.A0101"))
+
+sub_curve_burnin <- sub_curves %>%
+  group_by(Sample) %>%
+  summarise(max = max(Rank)) %>%
+  mutate(perc = round(max * 0.1)) %>%
+  select(Sample, perc) %>%
+  tibble::deframe(.)
+
+
+plot_cuperdec(sub_curves, burnin_result = burnin_result, restrict_x = 250) +
+  ggplot2::geom_hline(yintercept = 50, color = "grey") #+
+  # ggplot2::geom_rect(
+  #   xmin = sub_curve_burnin["ABM008.A0101"],
+  #   xmax = 252,
+  #   ymin = 50,
+  #   ymax = 101,
+  #   alpha = 0,
+  #   colour = "#D39200"
+  # ) +
+  # ggplot2::geom_rect(
+  #   xmin = sub_curve_burnin["FUM001.A0101"],
+  #   xmax = 250,
+  #   ymin = 50,
+  #   ymax = 100,
+  #   alpha = 0,
+  #   colour = "#FF61C3"
+  # )
 ```
 
 Once we are happy that the curves appear to be distinguishing between 
