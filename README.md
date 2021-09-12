@@ -11,7 +11,7 @@
 R package to generate 'Cumulative Percent Decay' curves, with optional 
 filtering functions, for microbial taxonomic profiles.
 
-![Example of Cumulative Percent Decay curves](inst/extdata/cuperdec_example_plot.svg)
+![Example of Cumulative Percent Decay curves](https://raw.githubusercontent.com/jfy133/cuperdec/master/inst/extdata/cuperdec_example_plot.svg)
 
 These curves aim to represent the level of 'endogenous' content of microbiome 
 samples, such as ancient dental calculus, to help to identify samples with low
