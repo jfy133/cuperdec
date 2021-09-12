@@ -4,18 +4,26 @@
 \alias{plot_cuperdec}
 \title{Plot cumulative percent decay curves}
 \usage{
-plot_cuperdec(curves, metadata, burnin_result, restrict_x = 0)
+plot_cuperdec(
+  curves,
+  metadata,
+  burnin_result,
+  restrict_x = 0,
+  facet_cols = NULL
+)
 }
 \arguments{
 \item{curves}{Output tibble from \code{\link{calculate_curve}}.}
 
-\item{metadata}{Optional output from \code{\link{load_map}}.}
+\item{metadata}{Output from \code{\link{load_map}}.}
 
-\item{burnin_result}{Optional output from \code{apply_*_burnin}.
-functions.}
+\item{burnin_result}{Output from \code{apply_*_burnin}.
+functions (optional).}
 
-\item{restrict_x}{Optional restriction viewing of abundance rank to X number
-of ranks (useful for closer inspection of curves).}
+\item{restrict_x}{Restrict viewing of abundance rank to X number
+of ranks (useful for closer inspection of curves) (optional).}
+
+\item{facet_cols}{Custom number of columns for faceted plots (optional).}
 }
 \value{
 A ggplot2 image object.
