@@ -409,7 +409,7 @@ some Neanderthals that are excluded with a hard burn-in of 10% despite having
 otherwise a curve pretty similar to other Neanderthals. This could be because 
 they have unusually long tails of very low abundant taxa, meaning that the 
 'peak' exceeding the minimum threshold of 50% occurs within the first 10% of 
-ranks, however this is still the region of theabundance rank that would give 
+ranks, however this is still the region of the abundance rank that would give 
 the strongest oral taxon signal in very old  samples.
 
 ## Adaptive Burnin
