@@ -10,7 +10,7 @@
 #'   functions (optional).
 #' @param restrict_x Restrict viewing of abundance rank to X number
 #'   of ranks (useful for closer inspection of curves) (optional).
-#' @param facet_cols Custom number of columns for faceted plots (optional). 
+#' @param facet_cols Custom number of columns for faceted plots (optional).
 #'
 #' @return A ggplot2 image object.
 #'
