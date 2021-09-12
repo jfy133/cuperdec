@@ -187,7 +187,10 @@ plot_grouped <- function(curves, metadata, facet_cols = NULL) {
 #'
 #' @noRd
 
-plot_grouped_burnin <- function(curves, metadata, burnin_result, facet_cols = NULL) {
+plot_grouped_burnin <- function(curves,
+                                metadata,
+                                burnin_result,
+                                facet_cols = NULL) {
   table_meta <- dplyr::left_join(curves,
     metadata,
     by = c("Sample")

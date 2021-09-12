@@ -304,7 +304,7 @@ yellow box at any abundance rank (i.e. above the minimum 50% threshold at any
 point across the x-axis) is considered as being `Passed`.
 
 ```{r echo=FALSE, fig.width=7, fig.height=5}
-plot_cuperdec(curves, metadata_map, filter_result) + 
+plot_cuperdec(curves, metadata_map, filter_result) +
   ggplot2::geom_hline(yintercept = 50, color = "grey") +
   ggplot2::geom_rect(xmin = 0,
                      xmax = max(curves$Rank),

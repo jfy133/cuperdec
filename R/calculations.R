@@ -212,8 +212,8 @@ adaptive_burnin_filter <- function(curves, percent_threshold) {
       Exceed_Limits = dplyr::if_else(
         .data$Fluctuation < .data$Upper_Limit &
           .data$Fluctuation > .data$Lower_Limit,
-        F,
-        T
+        FALSE,
+        TRUE
       )
     ) %>%
     dplyr::filter(.data$Exceed_Limits) %>%

@@ -12,9 +12,9 @@ Description: Calculates and visualises cumulative percent 'decay' curves,
     which are typically calculated from metagenomic taxonomic profiles.
     These can be used to estimate the level of expected 'endogenous' taxa
     at different abundance levels retrieved from metagenomic samples, when
-    comparing to samples of known sampling site or source. Method described in 
-    Fellows Yates, J. A. et. al. (2021) Proceedings of the National Academy of 
-    Sciences USA <di:10.1073/pnas.2021655118>.
+    comparing to samples of known sampling site or source. Method
+    described in Fellows Yates, J. A. et. al. (2021) Proceedings of the
+    National Academy of Sciences USA <di:10.1073/pnas.2021655118>.
 License: MIT + file LICENSE
 URL: https://github.com/jfy133/cuperdec
 BugReports: https://github.com/jfy133/cuperdec/issues
