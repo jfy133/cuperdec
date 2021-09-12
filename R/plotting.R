@@ -5,11 +5,12 @@
 #' on types filters.
 #'
 #' @param curves Output tibble from \code{\link{calculate_curve}}.
-#' @param metadata Optional output from \code{\link{load_map}}.
-#' @param burnin_result Optional output from \code{apply_*_burnin}.
-#'   functions.
-#' @param restrict_x Optional restriction viewing of abundance rank to X number
-#'   of ranks (useful for closer inspection of curves).
+#' @param metadata Output from \code{\link{load_map}}.
+#' @param burnin_result Output from \code{apply_*_burnin}.
+#'   functions (optional).
+#' @param restrict_x Restrict viewing of abundance rank to X number
+#'   of ranks (useful for closer inspection of curves) (optional).
+#' @param facet_cols Custom number of columns for faceted plots (optional). 
 #'
 #' @return A ggplot2 image object.
 #'
@@ -35,7 +36,8 @@ plot_cuperdec <-
   function(curves,
            metadata,
            burnin_result,
-           restrict_x = 0) {
+           restrict_x = 0,
+           facet_cols = NULL) {
     ## Validation
     validate_curves(curves)
 
@@ -61,9 +63,9 @@ plot_cuperdec <-
     } else if (missing(metadata)) {
       plot_burnin(curves, burnin_result)
     } else if (missing(burnin_result)) {
-      plot_grouped(curves, metadata)
+      plot_grouped(curves, metadata, facet_cols)
     } else {
-      plot_grouped_burnin(curves, metadata, burnin_result)
+      plot_grouped_burnin(curves, metadata, burnin_result, facet_cols)
     }
   }
 
@@ -138,13 +140,14 @@ plot_burnin <- function(curves, burnin_result) {
 #' category, which places each group into a new facet.
 #'
 #' @param curves Output tibble from \code{\link{calculate_curve}}.
-#' @param metadata Optional output from \code{\link{load_map}}.
+#' @param metadata Output from \code{\link{load_map}} (optional).
+#' @param facet_cols Custom number of columns in faceted table (optional).
 #'
 #' @return A ggplot2 image object.
 #'
 #' @noRd
 
-plot_grouped <- function(curves, metadata) {
+plot_grouped <- function(curves, metadata, facet_cols = NULL) {
   table_meta <- dplyr::left_join(curves, metadata, by = c("Sample"))
 
   ## Validation
@@ -163,7 +166,7 @@ plot_grouped <- function(curves, metadata) {
     ggplot2::ylim(0, 100) +
     ggplot2::xlab("Abundance Rank") +
     ggplot2::ylab("Percentage Target Source") +
-    ggplot2::facet_wrap(~Sample_Source) +
+    ggplot2::facet_wrap(~Sample_Source, ncol = facet_cols) +
     ggplot2::theme_minimal()
 }
 
@@ -175,15 +178,16 @@ plot_grouped <- function(curves, metadata) {
 #' group into a different facet.
 #'
 #' @param curves Output tibble from \code{\link{calculate_curve}}.
-#' @param metadata Optional output from \code{\link{load_map}}.
-#' @param burnin_result Optional output from \code{\link{apply_*_burnin}}
-#'   functions.
+#' @param metadata Output from \code{\link{load_map}} (optional).
+#' @param burnin_result Output from \code{\link{apply_*_burnin}}
+#'   functions (optional).
+#' @param facet_cols Custom number of columns in faceted table (optional).
 #'
 #' @return A ggplot2 image object.
 #'
 #' @noRd
 
-plot_grouped_burnin <- function(curves, metadata, burnin_result) {
+plot_grouped_burnin <- function(curves, metadata, burnin_result, facet_cols = NULL) {
   table_meta <- dplyr::left_join(curves,
     metadata,
     by = c("Sample")
@@ -207,6 +211,6 @@ plot_grouped_burnin <- function(curves, metadata, burnin_result) {
     ggplot2::ylim(0, 100) +
     ggplot2::xlab("Abundance Rank") +
     ggplot2::ylab("Percentage Target Source") +
-    ggplot2::facet_wrap(~Sample_Source) +
+    ggplot2::facet_wrap(~Sample_Source, ncol = facet_cols) +
     ggplot2::theme_minimal()
 }
