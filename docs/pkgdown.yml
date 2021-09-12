@@ -1,7 +1,0 @@
-pandoc: 2.11.4
-pkgdown: 1.6.1
-pkgdown_sha: ~
-articles:
-  cuperdec-intro: cuperdec-intro.html
-last_built: 2021-09-12T15:32Z
-
