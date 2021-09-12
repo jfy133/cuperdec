@@ -77,6 +77,14 @@ validate_curves <- function(curves) {
     )
   }
 
+  if (!any(names(attributes(curves)) == "groups")) {
+    stop(
+      "[cuperdec] error: your curves object is not grouped by the Sample column.
+      Please ensure to group your curve dataframe by the Sample
+      column before using downstream."
+    )
+  }
+
   if (ncol(curves) < 4 ||
     !all(c("Sample", "Taxon", "Rank", "Fraction_Target") %in%
       colnames(curves))) {
