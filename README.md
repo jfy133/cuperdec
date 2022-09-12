@@ -45,5 +45,5 @@ If you use `cuperdec`, please use the following citation:
 
 ## Acknowledgments
 
-Irina Velsko (@ivelsko), Zandra Fagerness (@ZandraFagernas), and Lena Semerau 
+Irina Velsko (@ivelsko), Zandra Fagernäs (@ZandraFagernas), and Lena Semerau 
 for testing and bug reports.
